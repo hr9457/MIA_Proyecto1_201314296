@@ -4,7 +4,7 @@
 %{
 #include <iostream>
 //#include <QString>
-//#include "parser.h"
+#include "parser.h"
 #include <string>
 //#include <QList>
 int yylex();
@@ -22,7 +22,7 @@ entero [0-9]+
 letra [a-zA-Z]+
 
 identificador {letra}({letra}|{entero}|"_")*
-/*caracter "\'"("\\")?({letra}|{entero})"\'"*/
+ruta ([/]([^\n' '])*)
 cadena [\"][^\"\n]*[\"\n]
 
 
@@ -56,15 +56,7 @@ cadena [\"][^\"\n]*[\"\n]
 "loss" {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return tk_loss;}
 "exec" {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return tk_exec;}
 "rep" {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return tk_rep;}
-*/
-%%
 
-"mkdisk" {columna=columna+ anterior;  anterior = strlen(yytext); strcpy(yylval.TEXT, yytext);return tk_mkdisk;}
-"rmdisk" {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return tk_rmdisk;}
-"fdisk" {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return tk_fdisk;}
-
-"size" {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return tk_size;}
-"path" {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return tk_path;}
 "f" {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return tk_f;}
 "u" {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return tk_u;}
 "type" {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return tk_type;}
@@ -83,18 +75,31 @@ cadena [\"][^\"\n]*[\"\n]
 "dest" {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return tk_dest;}
 "r" {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return tk_r;}
 "ruta" {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return tk_ruta;}
+*/
+%%
+
+"mkdisk"    {return tk_mkdisk;}
+"rmdisk"    {return tk_rmdisk;}
+"fdisk"     {return tk_fdisk;}
+
+"size"      {return tk_size;}
+"path"      {return tk_path;}
+"f"         {return tk_f;}
+"u"         {return tk_u;}
 
 
-{entero} {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return tk_entero;}
-{cadena} {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return tk_cadena;}
-{identificador} {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext); return tk_identificador;}
+
+{entero}        {return entero;}
+{cadena}        {return cadena;}
+{identificador} {return identificador;}
+{ruta}          {return tk_ruta;}
 
 
-"-" {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return tk_guion;}
-"=" {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return tk_igual;}
-"?" {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return tk_interrogacion;}
-"*" {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return tk_por;}
-"." {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return tk_punto;}
+"-" {return guion;}
+"=" {return igual;}
+"?" {return interrogacion;}
+"*" {return por;}
+"." {return punto;}
 
 
 "\n" {linea++; columna=0; anterior=0;}
