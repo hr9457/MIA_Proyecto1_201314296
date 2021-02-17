@@ -4,12 +4,17 @@
 #include <string>
 #include "qdebug.h"
 #include <iostream>
+#include <vector>
 #include "Objetos/mkdisk.h"
 //#include "obmkdisk.h"
 using namespace std;
 extern int yylineno; //linea actual donde se encuentra el parser (analisis lexico) lo maneja BISON
 extern int columna; //columna actual donde se encuentra el parser (analisis lexico) lo maneja BISON
 extern char *yytext; //lexema actual donde esta el parser (analisis lexico) lo maneja BISON
+
+/*vectores para los parametros de cada comando*/
+vector<string> parametrosMkdisk;
+string mkdiskParametros[3];
 
 int yyerror(const char* mens)
 {
@@ -27,7 +32,8 @@ return 0;
 //char TEXT [256];
 //QString TEXT;
 char TEXT[256];
-class mkdisk *mkdisk;
+/*objetos para cada comando*/
+//class mkdisk *mkdisk;
 }
 
 //TERMINALES DE TIPO TEXT, SON STRINGS
@@ -39,7 +45,12 @@ class mkdisk *mkdisk;
 %token<TEXT> tk_size;
 %token<TEXT> tk_path;
 %token<TEXT> tk_f;
+%token<TEXT> ajuste_bf;
+%token<TEXT> ajuste_ff;
+%token<TEXT> ajuste_wf;
 %token<TEXT> tk_u;
+%token<TEXT> tamanio_k;
+%token<TEXT> tamanio_m;
 
 %token<TEXT> guion;
 %token<TEXT> igual;
@@ -54,6 +65,7 @@ class mkdisk *mkdisk;
 %token<TEXT> tk_ruta;
 
 //%type<int> PARAMETROS_MKDISK;
+//%type<mkdisk> MKDISK;
 
 
 %start INICIO
@@ -66,7 +78,7 @@ LISTADO_COMANDOS: LISTADO_COMANDOS COMANDO
                 | COMANDO ; 
 
 
-COMANDO : MKDISK ;
+COMANDO : MKDISK {mkdisk *disco = new mkdisk(mkdiskParametros);} ;
 
 
 MKDISK : tk_mkdisk LIST_PARAMETROS_MKDISK ;
@@ -76,11 +88,7 @@ LIST_PARAMETROS_MKDISK  : LIST_PARAMETROS_MKDISK PARAMETROS_MKDISK
                         | PARAMETROS_MKDISK ;
 
 
-PARAMETROS_MKDISK : guion tk_size igual entero
-                  | guion tk_path igual RUTA
-                  | guion tk_u
-                  | guion tk_f ;
-
-
-RUTA : cadena 
-     | tk_ruta ;
+PARAMETROS_MKDISK : guion tk_size igual entero    {mkdiskParametros[0]=$4;}
+                  | guion tk_path igual cadena    {}
+                  | guion tk_path igual tk_ruta   {}
+                  ;

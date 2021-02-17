@@ -1,10 +1,10 @@
 #include "mkdisk.h"
 
-mkdisk::mkdisk()
+mkdisk::mkdisk(string mkdiskParametros[3])
 {
-
+    cout<<mkdiskParametros[0];
 }
 
-void mkdisk::mensaje(){
-    printf("creando disco desde la clase mkdisk\n");
+void mkdisk::mensaje()
+{
 }

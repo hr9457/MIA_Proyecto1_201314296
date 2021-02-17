@@ -78,28 +78,32 @@ cadena [\"][^\"\n]*[\"\n]
 */
 %%
 
-"mkdisk"    {return tk_mkdisk;}
-"rmdisk"    {return tk_rmdisk;}
-"fdisk"     {return tk_fdisk;}
+"mkdisk"    {columna=columna+ anterior;  anterior = strlen(yytext); strcpy(yylval.TEXT, yytext);return tk_mkdisk;}
+"rmdisk"    {columna=columna+ anterior;  anterior = strlen(yytext); strcpy(yylval.TEXT, yytext);return tk_rmdisk;}
+"fdisk"     {columna=columna+ anterior;  anterior = strlen(yytext); strcpy(yylval.TEXT, yytext);return tk_fdisk;}
 
-"size"      {return tk_size;}
-"path"      {return tk_path;}
-"f"         {return tk_f;}
-"u"         {return tk_u;}
-
-
-
-{entero}        {return entero;}
-{cadena}        {return cadena;}
-{identificador} {return identificador;}
-{ruta}          {return tk_ruta;}
+"size"      {columna=columna+ anterior;  anterior = strlen(yytext); strcpy(yylval.TEXT, yytext);return tk_size;}
+"path"      {columna=columna+ anterior;  anterior = strlen(yytext); strcpy(yylval.TEXT, yytext);return tk_path;}
+"f"         {columna=columna+ anterior;  anterior = strlen(yytext); strcpy(yylval.TEXT, yytext);return tk_f;}
+"BF"        {columna=columna+ anterior;  anterior = strlen(yytext); strcpy(yylval.TEXT, yytext);return ajuste_bf;}
+"FF"        {columna=columna+ anterior;  anterior = strlen(yytext); strcpy(yylval.TEXT, yytext);return ajuste_ff;}
+"WF"        {columna=columna+ anterior;  anterior = strlen(yytext); strcpy(yylval.TEXT, yytext);return ajuste_wf;}
+"u"         {columna=columna+ anterior;  anterior = strlen(yytext); strcpy(yylval.TEXT, yytext);return tk_u;}
+"k"         {columna=columna+ anterior;  anterior = strlen(yytext); strcpy(yylval.TEXT, yytext);return tamanio_k;}
+"m"         {columna=columna+ anterior;  anterior = strlen(yytext); strcpy(yylval.TEXT, yytext);return tamanio_m;}
 
 
-"-" {return guion;}
-"=" {return igual;}
-"?" {return interrogacion;}
-"*" {return por;}
-"." {return punto;}
+{entero}        {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return entero;}
+{cadena}        {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return cadena;}
+{identificador} {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return identificador;}
+{ruta}          {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return tk_ruta;}
+
+
+"-" {columna=columna+ anterior;  anterior = strlen(yytext); strcpy(yylval.TEXT, yytext);return guion;}
+"=" {columna=columna+ anterior;  anterior = strlen(yytext); strcpy(yylval.TEXT, yytext);return igual;}
+"?" {columna=columna+ anterior;  anterior = strlen(yytext); strcpy(yylval.TEXT, yytext);return interrogacion;}
+"*" {columna=columna+ anterior;  anterior = strlen(yytext); strcpy(yylval.TEXT, yytext);return por;}
+"." {columna=columna+ anterior;  anterior = strlen(yytext); strcpy(yylval.TEXT, yytext);return punto;}
 
 
 "\n" {linea++; columna=0; anterior=0;}
