@@ -4,23 +4,25 @@
 #include <string>
 #include <vector>
 #include <stdlib.h>
+#include <cstring>
+#include <sys/types.h>
+#include <sys/stat.h>
 using namespace std;
 
 class mkdisk
 {
 private:
-    //vector<string> parametrosMkdisk;
-    string mkdiskParametros[];
+    int size = 0;
+    string rutaArchivo = "";
+    const char separador = '/';
+    string nombreDisco = "";
 public:
-    mkdisk(string []);
-    void setSize(int);
-    int getSize();
-    void setCadena(string);
-    string getCadena();
-    void setRuta(string);
-    string getRuta();
-    void creacionDisco();
-    void mensaje();
+    mkdisk();
+    void crearDisco(string[]);
+    vector<string> split(string, char);
+    void crearCarpeta(string);
+    void directorioDisco(vector<string>);
+    string eliminacionComillas(string);
 };
 
 #endif // MKDISK_H

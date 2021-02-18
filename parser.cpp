@@ -1465,7 +1465,7 @@ yyreduce:
     {
   case 5:
 #line 81 "parser.y"
-                 {mkdisk *disco = new mkdisk(mkdiskParametros);}
+                 {mkdisk *disco = new mkdisk(); disco->crearDisco(mkdiskParametros);}
 #line 1470 "parser.cpp"
     break;
 
@@ -1477,13 +1477,13 @@ yyreduce:
 
   case 10:
 #line 92 "parser.y"
-                                                  {}
+                                                  {mkdiskParametros[1]=(yyvsp[0].TEXT);}
 #line 1482 "parser.cpp"
     break;
 
   case 11:
 #line 93 "parser.y"
-                                                  {}
+                                                  {mkdiskParametros[1]=(yyvsp[0].TEXT);}
 #line 1488 "parser.cpp"
     break;
 

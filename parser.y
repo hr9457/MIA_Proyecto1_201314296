@@ -78,7 +78,7 @@ LISTADO_COMANDOS: LISTADO_COMANDOS COMANDO
                 | COMANDO ; 
 
 
-COMANDO : MKDISK {mkdisk *disco = new mkdisk(mkdiskParametros);} ;
+COMANDO : MKDISK {mkdisk *disco = new mkdisk(); disco->crearDisco(mkdiskParametros);} ;
 
 
 MKDISK : tk_mkdisk LIST_PARAMETROS_MKDISK ;
@@ -89,6 +89,6 @@ LIST_PARAMETROS_MKDISK  : LIST_PARAMETROS_MKDISK PARAMETROS_MKDISK
 
 
 PARAMETROS_MKDISK : guion tk_size igual entero    {mkdiskParametros[0]=$4;}
-                  | guion tk_path igual cadena    {}
-                  | guion tk_path igual tk_ruta   {}
+                  | guion tk_path igual cadena    {mkdiskParametros[1]=$4;}
+                  | guion tk_path igual tk_ruta   {mkdiskParametros[1]=$4;}
                   ;
