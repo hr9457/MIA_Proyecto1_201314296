@@ -18,8 +18,8 @@ int anterior = 0;
 
 
 /*Expresion Regulares*/
-entero [0-9]+
-letra [a-zA-Z]+
+entero [0-9]
+letra [a-zA-Z]
 
 identificador {letra}({letra}|{entero}|"_")*
 ruta ([/]([^\n' '])*)
@@ -85,12 +85,7 @@ cadena [\"][^\"\n]*[\"\n]
 "size"      {columna=columna+ anterior;  anterior = strlen(yytext); strcpy(yylval.TEXT, yytext);return tk_size;}
 "path"      {columna=columna+ anterior;  anterior = strlen(yytext); strcpy(yylval.TEXT, yytext);return tk_path;}
 "f"         {columna=columna+ anterior;  anterior = strlen(yytext); strcpy(yylval.TEXT, yytext);return tk_f;}
-"BF"        {columna=columna+ anterior;  anterior = strlen(yytext); strcpy(yylval.TEXT, yytext);return ajuste_bf;}
-"FF"        {columna=columna+ anterior;  anterior = strlen(yytext); strcpy(yylval.TEXT, yytext);return ajuste_ff;}
-"WF"        {columna=columna+ anterior;  anterior = strlen(yytext); strcpy(yylval.TEXT, yytext);return ajuste_wf;}
 "u"         {columna=columna+ anterior;  anterior = strlen(yytext); strcpy(yylval.TEXT, yytext);return tk_u;}
-"k"         {columna=columna+ anterior;  anterior = strlen(yytext); strcpy(yylval.TEXT, yytext);return tamanio_k;}
-"m"         {columna=columna+ anterior;  anterior = strlen(yytext); strcpy(yylval.TEXT, yytext);return tamanio_m;}
 
 
 {entero}        {columna=columna+ anterior;  anterior = strlen(yytext);strcpy(yylval.TEXT, yytext);return entero;}

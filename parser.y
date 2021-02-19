@@ -45,12 +45,7 @@ char TEXT[256];
 %token<TEXT> tk_size;
 %token<TEXT> tk_path;
 %token<TEXT> tk_f;
-%token<TEXT> ajuste_bf;
-%token<TEXT> ajuste_ff;
-%token<TEXT> ajuste_wf;
 %token<TEXT> tk_u;
-%token<TEXT> tamanio_k;
-%token<TEXT> tamanio_m;
 
 %token<TEXT> guion;
 %token<TEXT> igual;
@@ -78,7 +73,7 @@ LISTADO_COMANDOS: LISTADO_COMANDOS COMANDO
                 | COMANDO ; 
 
 
-COMANDO : MKDISK {mkdisk *disco = new mkdisk(); disco->crearDisco(mkdiskParametros);} ;
+COMANDO : MKDISK {mkdisk disco; disco.crearDisco(mkdiskParametros);} ;
 
 
 MKDISK : tk_mkdisk LIST_PARAMETROS_MKDISK ;

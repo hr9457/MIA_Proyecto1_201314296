@@ -145,21 +145,16 @@ extern int yydebug;
     tk_size = 261,
     tk_path = 262,
     tk_f = 263,
-    ajuste_bf = 264,
-    ajuste_ff = 265,
-    ajuste_wf = 266,
-    tk_u = 267,
-    tamanio_k = 268,
-    tamanio_m = 269,
-    guion = 270,
-    igual = 271,
-    interrogacion = 272,
-    por = 273,
-    punto = 274,
-    entero = 275,
-    cadena = 276,
-    identificador = 277,
-    tk_ruta = 278
+    tk_u = 264,
+    guion = 265,
+    igual = 266,
+    interrogacion = 267,
+    por = 268,
+    punto = 269,
+    entero = 270,
+    cadena = 271,
+    identificador = 272,
+    tk_ruta = 273
   };
 #endif
 
@@ -176,7 +171,7 @@ char TEXT[256];
 /*objetos para cada comando*/
 //class mkdisk *mkdisk;
 
-#line 180 "parser.cpp"
+#line 175 "parser.cpp"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -515,7 +510,7 @@ union yyalloc
 #define YYLAST   11
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  24
+#define YYNTOKENS  19
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  7
 /* YYNRULES -- Number of rules.  */
@@ -524,7 +519,7 @@ union yyalloc
 #define YYNSTATES  19
 
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   278
+#define YYMAXUTOK   273
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -563,15 +558,15 @@ static const yytype_int8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
        5,     6,     7,     8,     9,    10,    11,    12,    13,    14,
-      15,    16,    17,    18,    19,    20,    21,    22,    23
+      15,    16,    17,    18
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    74,    74,    77,    78,    81,    84,    87,    88,    91,
-      92,    93
+       0,    69,    69,    72,    73,    76,    79,    82,    83,    86,
+      87,    88
 };
 #endif
 
@@ -581,8 +576,7 @@ static const yytype_int8 yyrline[] =
 static const char *const yytname[] =
 {
   "$end", "error", "$undefined", "tk_mkdisk", "tk_rmdisk", "tk_fdisk",
-  "tk_size", "tk_path", "tk_f", "ajuste_bf", "ajuste_ff", "ajuste_wf",
-  "tk_u", "tamanio_k", "tamanio_m", "guion", "igual", "interrogacion",
+  "tk_size", "tk_path", "tk_f", "tk_u", "guion", "igual", "interrogacion",
   "por", "punto", "entero", "cadena", "identificador", "tk_ruta",
   "$accept", "INICIO", "LISTADO_COMANDOS", "COMANDO", "MKDISK",
   "LIST_PARAMETROS_MKDISK", "PARAMETROS_MKDISK", YY_NULLPTR
@@ -595,12 +589,11 @@ static const char *const yytname[] =
 static const yytype_int16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
-     265,   266,   267,   268,   269,   270,   271,   272,   273,   274,
-     275,   276,   277,   278
+     265,   266,   267,   268,   269,   270,   271,   272,   273
 };
 # endif
 
-#define YYPACT_NINF (-22)
+#define YYPACT_NINF (-17)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -614,8 +607,8 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -2,   -10,     6,    -2,   -22,   -22,    -3,   -10,   -22,   -22,
-     -22,    -9,    -8,   -22,   -11,   -21,   -22,   -22,   -22
+      -2,    -5,     6,    -2,   -17,   -17,    -3,    -5,   -17,   -17,
+     -17,    -4,    -1,   -17,    -7,   -16,   -17,   -17,   -17
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -630,7 +623,7 @@ static const yytype_int8 yydefact[] =
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -22,   -22,   -22,     7,   -22,   -22,     4
+     -17,   -17,   -17,     8,   -17,   -17,     2
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
@@ -644,29 +637,29 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      17,     1,    18,    11,    12,     6,     9,    14,    15,    16,
-      10,    13
+      17,     1,    18,    11,    12,     6,     9,    14,    16,    13,
+      15,    10
 };
 
 static const yytype_int8 yycheck[] =
 {
-      21,     3,    23,     6,     7,    15,     0,    16,    16,    20,
-       3,     7
+      16,     3,    18,     6,     7,    10,     0,    11,    15,     7,
+      11,     3
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     3,    25,    26,    27,    28,    15,    29,    30,     0,
-      27,     6,     7,    30,    16,    16,    20,    21,    23
+       0,     3,    20,    21,    22,    23,    10,    24,    25,     0,
+      22,     6,     7,    25,    11,    11,    15,    16,    18
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    24,    25,    26,    26,    27,    28,    29,    29,    30,
-      30,    30
+       0,    19,    20,    21,    21,    22,    23,    24,    24,    25,
+      25,    25
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
@@ -1464,31 +1457,31 @@ yyreduce:
   switch (yyn)
     {
   case 5:
-#line 81 "parser.y"
-                 {mkdisk *disco = new mkdisk(); disco->crearDisco(mkdiskParametros);}
-#line 1470 "parser.cpp"
+#line 76 "parser.y"
+                 {mkdisk disco; disco.crearDisco(mkdiskParametros);}
+#line 1463 "parser.cpp"
     break;
 
   case 9:
-#line 91 "parser.y"
+#line 86 "parser.y"
                                                   {mkdiskParametros[0]=(yyvsp[0].TEXT);}
-#line 1476 "parser.cpp"
+#line 1469 "parser.cpp"
     break;
 
   case 10:
-#line 92 "parser.y"
+#line 87 "parser.y"
                                                   {mkdiskParametros[1]=(yyvsp[0].TEXT);}
-#line 1482 "parser.cpp"
+#line 1475 "parser.cpp"
     break;
 
   case 11:
-#line 93 "parser.y"
+#line 88 "parser.y"
                                                   {mkdiskParametros[1]=(yyvsp[0].TEXT);}
-#line 1488 "parser.cpp"
+#line 1481 "parser.cpp"
     break;
 
 
-#line 1492 "parser.cpp"
+#line 1485 "parser.cpp"
 
       default: break;
     }

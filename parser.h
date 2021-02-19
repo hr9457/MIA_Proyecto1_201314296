@@ -55,21 +55,16 @@ extern int yydebug;
     tk_size = 261,
     tk_path = 262,
     tk_f = 263,
-    ajuste_bf = 264,
-    ajuste_ff = 265,
-    ajuste_wf = 266,
-    tk_u = 267,
-    tamanio_k = 268,
-    tamanio_m = 269,
-    guion = 270,
-    igual = 271,
-    interrogacion = 272,
-    por = 273,
-    punto = 274,
-    entero = 275,
-    cadena = 276,
-    identificador = 277,
-    tk_ruta = 278
+    tk_u = 264,
+    guion = 265,
+    igual = 266,
+    interrogacion = 267,
+    por = 268,
+    punto = 269,
+    entero = 270,
+    cadena = 271,
+    identificador = 272,
+    tk_ruta = 273
   };
 #endif
 
@@ -86,7 +81,7 @@ char TEXT[256];
 /*objetos para cada comando*/
 //class mkdisk *mkdisk;
 
-#line 90 "parser.h"
+#line 85 "parser.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

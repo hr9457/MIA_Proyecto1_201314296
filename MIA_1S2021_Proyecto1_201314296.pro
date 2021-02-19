@@ -35,4 +35,5 @@ HEADERS += \
     Objetos/mkdisk.h \
     parser.y \
     parser.y \
-    parser.y
+    parser.y \
+    Objetos/metodos.h
