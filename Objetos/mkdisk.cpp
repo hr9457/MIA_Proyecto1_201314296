@@ -35,7 +35,7 @@ void mkdisk::crearDisco(string parametros[])
             nombreDisco = rutas[rutas.size()-1];//nombre del archivo
             directorioDisco(rutas);//ruta para el archivo
             crearFichero(this->rutaArchivo);//metodo para crear archivo binario
-            cout<<"Creacion del disco: "<<nombreDisco<<" En la ubicacion: "<<rutaArchivo<<"\n";  
+            cout<<"-->Creacion del disco: "<<nombreDisco<<" En la ubicacion: "<<rutaArchivo<<"\n";  
         }               
     }
     else
@@ -140,28 +140,6 @@ void mkdisk::crearFichero(string rutaArchivo)
 
     //creacion de un MBR para el disco
     crearMBR(archivo,tamanioArchivo);
-    /*
-    //llenado de datos en la estructura del mbr
-    MBR.mbr_tamanio = tamanioArchivo;
-    strcpy ( MBR.mbr_fecha_creacion, obtenerFecha().c_str());
-    MBR.mbr_disk_signature = (rand() % 100);
-    strcpy( MBR.mbr_fit,"F");
-
-
-    //agregacion del MBR al archivo binario
-    archivo = fopen(rutaArchivo.c_str(),"rb+");
-    if(archivo!=NULL)
-    {
-        fseek(archivo,0,SEEK_SET);
-        fwrite(&MBR,sizeof(MBR),1,archivo);
-        fclose(archivo);
-        cout<<"Agregacion del MBR al dico: "<<nombreDisco<<endl;
-    }
-    else
-    {
-        cout<<"MBR no creado imposible de acceder al disco: "<<nombreDisco<<endl;
-    }
-    */
 }
 
 /*metodo para obtener la fecha y hora*/
@@ -188,6 +166,20 @@ void mkdisk::crearMBR(FILE *archivo,int tamanioArchivo)
     strcpy ( MBR.mbr_fecha_creacion, obtenerFecha().c_str());
     MBR.mbr_disk_signature = (rand() % 100);
     strcpy( MBR.mbr_fit,"F");
+    //agreagacion los estados para las particiones del disco
+    partition PARTICION;
+    PARTICION.part_status = '0';
+    PARTICION.part_type   = '-';
+    PARTICION.part_fit    = '-';
+    PARTICION.part_star   = -1 ;
+    PARTICION.part_size   = -1 ;
+    strcpy(PARTICION.part_name,"0");
+    //llenado todos las particiones con los mismos parametros
+    for(int i=0;i<4;i++)
+    {
+        MBR.mbr_partitions[i] = PARTICION;
+    }
+
     //agregacion del MBR al archivo binario
     archivo = fopen(rutaArchivo.c_str(),"rb+");
     if(archivo!=NULL)

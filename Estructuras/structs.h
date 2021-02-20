@@ -4,9 +4,9 @@
 /*Estructura para una particion*/
 struct partition
 {
-    char part_status[1];
-    char part_type[1];
-    char part_fit[1];
+    char part_status;
+    char part_type;
+    char part_fit;
     int part_star;
     int part_size;
     char part_name[16];
@@ -20,7 +20,7 @@ struct mbr
     char mbr_fecha_creacion[16];
     int mbr_disk_signature;
     char mbr_fit[1];
-    partition mbr_partitionp[4];
+    partition mbr_partitions[4];
 };
 
 
