@@ -36,4 +36,6 @@ HEADERS += \
     parser.y \
     parser.y \
     parser.y \
-    Objetos/metodos.h
+    Objetos/metodos.h \
+    Estructuras/structs.h \
+    funciones/utilidades.h

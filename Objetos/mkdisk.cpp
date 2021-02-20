@@ -9,7 +9,7 @@ void mkdisk::crearDisco(string parametros[])
 {
     //empty() 1 vacio y 0 no vacio
     //cambiar el or a un and
-    if(parametros[0].empty() != 1 && parametros[1].empty() !=1 )
+    if(parametros[0].empty() != 1 && parametros[1].empty() != 1 )
     {
         vector<string> rutas;
         this->size = atoi(parametros[0].c_str());
@@ -26,7 +26,7 @@ void mkdisk::crearDisco(string parametros[])
             nombreDisco = rutas[rutas.size()-1];
             directorioDisco(rutas);
             crearFichero(this->rutaArchivo);//metodo para crear archivo binario
-            cout<<"Creacion del disco: "<<nombreDisco<<" En la ubicacion: "<<rutaArchivo<<"\n"; 
+            cout<<"-->Creacion del disco: "<<nombreDisco<<" En la ubicacion: "<<rutaArchivo<<"\n"; 
         }
         else
         {
@@ -40,7 +40,7 @@ void mkdisk::crearDisco(string parametros[])
     }
     else
     {
-        cout<<"parametro obligatorio faltantes: size,path\n";
+        cout<<"-->parametro obligatorio faltantes: size,path\n";
     }
 }
 
@@ -96,18 +96,13 @@ string mkdisk::eliminacionComillas(string ruta)
     //cout << resultado[1] << endl;
     return rutaSinComillas;
 }
-/*
-for para recorrer un vector
-for(int i = 0; i < rutas.size(); i++)
-{
-    cout << rutas[i] << endl;
-}
-*/
 
 
 /*metodo para la creacion del archivo binario*/
 void mkdisk::crearFichero(string rutaArchivo)
 {
+    mbr MBR;
+    int tamanioArchivo;
     FILE *archivo;
     archivo = fopen(rutaArchivo.c_str(),"wb");
     if(archivo==NULL)
@@ -120,6 +115,7 @@ void mkdisk::crearFichero(string rutaArchivo)
     if(pesoArchivo == "k")
     {    
         int pesoKilobytes = this->size*1024;
+        tamanioArchivo = this->size*1024;
         for(int i=0;i<1024;i++)
             buffer[i] = '\0';        
         //for para el llenado de 0 en el archivo
@@ -131,9 +127,10 @@ void mkdisk::crearFichero(string rutaArchivo)
     else
     {
         int pesoMegabytes = this->size;
+        tamanioArchivo = this->size*1024*1024;
         //for para el llenado de 0 en el archivo
-        for(int i=0;i<this->size;i++)
-            fwrite(&buffer,1024,1,archivo);
+        for(int i=0;i<1024;i++)
+            buffer[i] = '\0'; 
         //for para el llenado de 0 en el archivo
         for(int i=0;i<this->size*1024;i++)
             fwrite(&buffer,1024,1,archivo); 
@@ -141,4 +138,66 @@ void mkdisk::crearFichero(string rutaArchivo)
         fclose(archivo);
     }
 
+    //creacion de un MBR para el disco
+    crearMBR(archivo,tamanioArchivo);
+    /*
+    //llenado de datos en la estructura del mbr
+    MBR.mbr_tamanio = tamanioArchivo;
+    strcpy ( MBR.mbr_fecha_creacion, obtenerFecha().c_str());
+    MBR.mbr_disk_signature = (rand() % 100);
+    strcpy( MBR.mbr_fit,"F");
+
+
+    //agregacion del MBR al archivo binario
+    archivo = fopen(rutaArchivo.c_str(),"rb+");
+    if(archivo!=NULL)
+    {
+        fseek(archivo,0,SEEK_SET);
+        fwrite(&MBR,sizeof(MBR),1,archivo);
+        fclose(archivo);
+        cout<<"Agregacion del MBR al dico: "<<nombreDisco<<endl;
+    }
+    else
+    {
+        cout<<"MBR no creado imposible de acceder al disco: "<<nombreDisco<<endl;
+    }
+    */
 }
+
+/*metodo para obtener la fecha y hora*/
+string mkdisk::obtenerFecha()
+{
+    string horaFecha;
+    time_t rawtime;
+    struct tm * timeinfo;
+    char bufferInfo[16];
+    time (&rawtime);
+    timeinfo = localtime (&rawtime);
+    strftime(bufferInfo,16,"%d/%m/%y %H:%M",timeinfo);
+    //printf(bufferInfo);
+    horaFecha = bufferInfo;
+    return horaFecha;
+}
+
+/*metodo para crear un mbr en el disco creado*/
+void mkdisk::crearMBR(FILE *archivo,int tamanioArchivo)
+{
+    //llenado de datos en la estructura del mbr
+    mbr MBR;
+    MBR.mbr_tamanio = tamanioArchivo;
+    strcpy ( MBR.mbr_fecha_creacion, obtenerFecha().c_str());
+    MBR.mbr_disk_signature = (rand() % 100);
+    strcpy( MBR.mbr_fit,"F");
+    //agregacion del MBR al archivo binario
+    archivo = fopen(rutaArchivo.c_str(),"rb+");
+    if(archivo!=NULL)
+    {
+        fseek(archivo,0,SEEK_SET);
+        fwrite(&MBR,sizeof(MBR),1,archivo);
+        fclose(archivo);
+        cout<<"--->Creacion de MBR al dico: "<<nombreDisco<<endl;
+    }
+    else{ cout<<"--->MBR no creado imposible de acceder al disco: "<<nombreDisco<<endl; }
+}
+
+

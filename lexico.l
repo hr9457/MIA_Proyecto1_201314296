@@ -18,7 +18,7 @@ int anterior = 0;
 
 
 /*Expresion Regulares*/
-entero [0-9]
+entero [0-9]+
 letra [a-zA-Z]
 
 identificador {letra}({letra}|{entero}|"_")*

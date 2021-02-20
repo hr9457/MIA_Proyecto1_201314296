@@ -8,6 +8,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fstream>
+#include <Estructuras/structs.h>
+#include <time.h>
 using namespace std;
 
 class mkdisk
@@ -17,8 +19,9 @@ private:
     string rutaArchivo = "";
     const char separador = '/';
     string nombreDisco = "";
-    string pesoArchivo = "m";
-    
+    string pesoArchivo = "m"; 
+    string fit;   
+
 public:
     mkdisk();
     void crearDisco(string[]);
@@ -27,6 +30,8 @@ public:
     string directorioDisco(vector<string>);
     string eliminacionComillas(string);
     void crearFichero(string);
+    string obtenerFecha();
+    void crearMBR(FILE *,int);
 };
 
 #endif // MKDISK_H
