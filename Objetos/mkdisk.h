@@ -20,7 +20,7 @@ private:
     const char separador = '/';
     string nombreDisco = "";
     string pesoArchivo = "m"; 
-    string fit;   
+    string fit = "bf";   
 
 public:
     mkdisk();
@@ -31,6 +31,7 @@ public:
     string eliminacionComillas(string);
     void crearFichero(string);
     void crearMBR(FILE *,int);
+    void cambioAjuste(string);
 };
 
 #endif // MKDISK_H

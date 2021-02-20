@@ -15,7 +15,7 @@ extern char *yytext; //lexema actual donde esta el parser (analisis lexico) lo m
 
 /*vectores para los parametros de cada comando*/
 vector<string> parametrosMkdisk;
-string mkdiskParametros[3];
+string mkdiskParametros[4];
 string rmdiskParametros;
 
 int yyerror(const char* mens)
@@ -90,6 +90,7 @@ PARAMETROS_MKDISK : guion tk_size igual entero      {mkdiskParametros[0]=$4;}
                   | guion tk_path igual cadena      {mkdiskParametros[1]=$4;}
                   | guion tk_path igual tk_ruta     {mkdiskParametros[1]=$4;}
                   | guion tk_u igual identificador  {mkdiskParametros[2]=$4;}
+                  | guion tk_f igual identificador  {mkdiskParametros[3]=$4;}
                   ;
 
 RMDSIK : tk_rmdisk guion tk_path igual cadena  {rmdiskParametros=$5;}

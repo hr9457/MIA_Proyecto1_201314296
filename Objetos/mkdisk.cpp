@@ -19,6 +19,9 @@ void mkdisk::crearDisco(string parametros[])
         /*verificacion del atributo para el cambio del peso en el archivo*/
         if(parametros[2].empty() != true){this->pesoArchivo=parametros[2];}
 
+        /*verificacion del artribuo fit para el cambio de ajuste*/
+        if(parametros[3].empty() != true){cambioAjuste(parametros[3]);}
+
         /*verficacion de comillas en ruta*/
         if(rutaArchivo[0] == '\"')
         {
@@ -162,7 +165,7 @@ void mkdisk::crearMBR(FILE *archivo,int tamanioArchivo)
     MBR.mbr_tamanio = tamanioArchivo;
     strcpy ( MBR.mbr_fecha_creacion, bufferInfo);
     MBR.mbr_disk_signature = (rand() % 100);
-    strcpy( MBR.mbr_fit,"F");
+    strcpy( MBR.mbr_fit,this->fit.c_str());
     //agreagacion los estados para las particiones del disco
     partition PARTICION;
     PARTICION.part_status = '0';
@@ -190,3 +193,16 @@ void mkdisk::crearMBR(FILE *archivo,int tamanioArchivo)
 }
 
 
+/*metodo para para recalcular el el fit del disco*/
+void mkdisk::cambioAjuste(string tipoAjuste)
+{
+    //mejor ajuste, primer ajuste, peor ajuste
+    if(tipoAjuste == "fb" || tipoAjuste == "FB")
+    {this->fit = tipoAjuste;}
+    else if(tipoAjuste == "ff" || tipoAjuste == "FF")
+    {this->fit = tipoAjuste;}
+    else if(tipoAjuste == "wf" || tipoAjuste == "WF")
+    {this->fit = tipoAjuste;}
+    else
+    {cout<<"Tipo de ajuste no se reconoce se asignado el FB"<<endl;}
+}
