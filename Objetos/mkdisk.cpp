@@ -16,7 +16,9 @@ void mkdisk::crearDisco(string parametros[])
         this->size = atoi(parametros[0].c_str());
         this->rutaArchivo = parametros[1];
 
-        
+        /*verificacion del atributo para el cambio del peso en el archivo*/
+        if(parametros[2].empty() != true){this->pesoArchivo=parametros[2];}
+
         /*verficacion de comillas en ruta*/
         if(rutaArchivo[0] == '\"')
         {
