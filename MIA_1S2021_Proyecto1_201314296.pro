@@ -12,7 +12,9 @@ TEMPLATE = app
 SOURCES += main.cpp \
     scanner.cpp \
     parser.cpp \
-    Objetos/mkdisk.cpp
+    Objetos/mkdisk.cpp \
+    Objetos/rmdisk.cpp \
+    libreria/funciones.cpp
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -36,6 +38,6 @@ HEADERS += \
     parser.y \
     parser.y \
     parser.y \
-    Objetos/metodos.h \
     Estructuras/structs.h \
-    funciones/utilidades.h
+    Objetos/rmdisk.h \
+    libreria/funciones.h

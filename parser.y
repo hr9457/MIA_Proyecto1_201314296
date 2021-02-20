@@ -6,6 +6,7 @@
 #include <iostream>
 #include <vector>
 #include "Objetos/mkdisk.h"
+#include "Objetos/rmdisk.h"
 //#include "obmkdisk.h"
 using namespace std;
 extern int yylineno; //linea actual donde se encuentra el parser (analisis lexico) lo maneja BISON
@@ -15,7 +16,7 @@ extern char *yytext; //lexema actual donde esta el parser (analisis lexico) lo m
 /*vectores para los parametros de cada comando*/
 vector<string> parametrosMkdisk;
 string mkdiskParametros[3];
-string rmdiskParametros[1];
+string rmdiskParametros;
 
 int yyerror(const char* mens)
 {
@@ -75,7 +76,7 @@ LISTADO_COMANDOS: LISTADO_COMANDOS COMANDO
 
 
 COMANDO : MKDISK {mkdisk disco; disco.crearDisco(mkdiskParametros);}
-        | RMDSIK {} ;
+        | RMDSIK {rmdisk eliminacion; eliminacion.eliminarDisco(rmdiskParametros);} ;
 
 
 MKDISK : tk_mkdisk LIST_PARAMETROS_MKDISK ;
@@ -91,5 +92,5 @@ PARAMETROS_MKDISK : guion tk_size igual entero      {mkdiskParametros[0]=$4;}
                   | guion tk_u igual identificador  {mkdiskParametros[2]=$4;}
                   ;
 
-RMDSIK : tk_rmdisk guion tk_path igual cadena  {rmdiskParametros[0]=$5;}
-       | tk_rmdisk guion tk_path igual tk_ruta {rmdiskParametros[0]=$5;} ;
+RMDSIK : tk_rmdisk guion tk_path igual cadena  {rmdiskParametros=$5;}
+       | tk_rmdisk guion tk_path igual tk_ruta {rmdiskParametros=$5;} ;

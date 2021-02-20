@@ -75,6 +75,7 @@
 #include <iostream>
 #include <vector>
 #include "Objetos/mkdisk.h"
+#include "Objetos/rmdisk.h"
 //#include "obmkdisk.h"
 using namespace std;
 extern int yylineno; //linea actual donde se encuentra el parser (analisis lexico) lo maneja BISON
@@ -84,7 +85,7 @@ extern char *yytext; //lexema actual donde esta el parser (analisis lexico) lo m
 /*vectores para los parametros de cada comando*/
 vector<string> parametrosMkdisk;
 string mkdiskParametros[3];
-string rmdiskParametros[1];
+string rmdiskParametros;
 
 int yyerror(const char* mens)
 {
@@ -92,7 +93,7 @@ std::cout << mens <<" "<<yytext<< std::endl;
 return 0;
 }
 
-#line 96 "parser.cpp"
+#line 97 "parser.cpp"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -163,7 +164,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 31 "parser.y"
+#line 32 "parser.y"
 
 //se especifican los tipo de valores para los no terminales y lo terminales
 //char TEXT [256];
@@ -172,7 +173,7 @@ char TEXT[256];
 /*objetos para cada comando*/
 //class mkdisk *mkdisk;
 
-#line 176 "parser.cpp"
+#line 177 "parser.cpp"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -566,8 +567,8 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    70,    70,    73,    74,    77,    78,    81,    84,    85,
-      88,    89,    90,    91,    94,    95
+       0,    71,    71,    74,    75,    78,    79,    82,    85,    86,
+      89,    90,    91,    92,    95,    96
 };
 #endif
 
@@ -1463,55 +1464,55 @@ yyreduce:
   switch (yyn)
     {
   case 5:
-#line 77 "parser.y"
+#line 78 "parser.y"
                  {mkdisk disco; disco.crearDisco(mkdiskParametros);}
-#line 1469 "parser.cpp"
+#line 1470 "parser.cpp"
     break;
 
   case 6:
-#line 78 "parser.y"
-                 {}
-#line 1475 "parser.cpp"
+#line 79 "parser.y"
+                 {rmdisk eliminacion; eliminacion.eliminarDisco(rmdiskParametros);}
+#line 1476 "parser.cpp"
     break;
 
   case 10:
-#line 88 "parser.y"
+#line 89 "parser.y"
                                                     {mkdiskParametros[0]=(yyvsp[0].TEXT);}
-#line 1481 "parser.cpp"
+#line 1482 "parser.cpp"
     break;
 
   case 11:
-#line 89 "parser.y"
+#line 90 "parser.y"
                                                     {mkdiskParametros[1]=(yyvsp[0].TEXT);}
-#line 1487 "parser.cpp"
+#line 1488 "parser.cpp"
     break;
 
   case 12:
-#line 90 "parser.y"
+#line 91 "parser.y"
                                                     {mkdiskParametros[1]=(yyvsp[0].TEXT);}
-#line 1493 "parser.cpp"
+#line 1494 "parser.cpp"
     break;
 
   case 13:
-#line 91 "parser.y"
+#line 92 "parser.y"
                                                     {mkdiskParametros[2]=(yyvsp[0].TEXT);}
-#line 1499 "parser.cpp"
+#line 1500 "parser.cpp"
     break;
 
   case 14:
-#line 94 "parser.y"
-                                               {rmdiskParametros[0]=(yyvsp[0].TEXT);}
-#line 1505 "parser.cpp"
+#line 95 "parser.y"
+                                               {rmdiskParametros=(yyvsp[0].TEXT);}
+#line 1506 "parser.cpp"
     break;
 
   case 15:
-#line 95 "parser.y"
-                                               {rmdiskParametros[0]=(yyvsp[0].TEXT);}
-#line 1511 "parser.cpp"
+#line 96 "parser.y"
+                                               {rmdiskParametros=(yyvsp[0].TEXT);}
+#line 1512 "parser.cpp"
     break;
 
 
-#line 1515 "parser.cpp"
+#line 1516 "parser.cpp"
 
       default: break;
     }
