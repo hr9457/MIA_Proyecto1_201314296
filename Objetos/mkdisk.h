@@ -30,7 +30,6 @@ public:
     string directorioDisco(vector<string>);
     string eliminacionComillas(string);
     void crearFichero(string);
-    string obtenerFecha();
     void crearMBR(FILE *,int);
 };
 

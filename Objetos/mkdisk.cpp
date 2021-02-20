@@ -1,5 +1,6 @@
 #include "mkdisk.h"
 
+/*metodo constructor inutilizable en esta clase*/
 mkdisk::mkdisk()
 {
 }
@@ -20,7 +21,7 @@ void mkdisk::crearDisco(string parametros[])
         if(rutaArchivo[0] == '\"')
         {
             //la ruta path viene entre comillas
-            cout<<"la ruta viene entre comillas\n";
+            cout<<"-->la ruta viene entre comillas\n";
             this->rutaArchivo=eliminacionComillas(rutaArchivo);
             rutas = split(rutaArchivo,separador);  
             nombreDisco = rutas[rutas.size()-1];
@@ -65,7 +66,7 @@ void mkdisk::crearCarpeta(string nombreCarpeta)
 {
     if(mkdir(nombreCarpeta.c_str(),07777)==-1)
     {
-        cout<<"Carpeta Existente\n";
+        cout<<"-->Carpeta Existente\n";
     }
 }
 
@@ -101,7 +102,6 @@ string mkdisk::eliminacionComillas(string ruta)
 /*metodo para la creacion del archivo binario*/
 void mkdisk::crearFichero(string rutaArchivo)
 {
-    mbr MBR;
     int tamanioArchivo;
     FILE *archivo;
     archivo = fopen(rutaArchivo.c_str(),"wb");
@@ -142,28 +142,23 @@ void mkdisk::crearFichero(string rutaArchivo)
     crearMBR(archivo,tamanioArchivo);
 }
 
-/*metodo para obtener la fecha y hora*/
-string mkdisk::obtenerFecha()
+
+/*metodo para crear un mbr en el disco creado*/
+void mkdisk::crearMBR(FILE *archivo,int tamanioArchivo)
 {
+    // crecion de fecha y hora para guardar en el MBR
     string horaFecha;
     time_t rawtime;
     struct tm * timeinfo;
     char bufferInfo[16];
     time (&rawtime);
     timeinfo = localtime (&rawtime);
-    strftime(bufferInfo,16,"%d/%m/%y %H:%M",timeinfo);
-    //printf(bufferInfo);
-    horaFecha = bufferInfo;
-    return horaFecha;
-}
+    strftime(bufferInfo,sizeof(bufferInfo),"%d/%m/%y %H:%M",timeinfo);
 
-/*metodo para crear un mbr en el disco creado*/
-void mkdisk::crearMBR(FILE *archivo,int tamanioArchivo)
-{
     //llenado de datos en la estructura del mbr
     mbr MBR;
     MBR.mbr_tamanio = tamanioArchivo;
-    strcpy ( MBR.mbr_fecha_creacion, obtenerFecha().c_str());
+    strcpy ( MBR.mbr_fecha_creacion, bufferInfo);
     MBR.mbr_disk_signature = (rand() % 100);
     strcpy( MBR.mbr_fit,"F");
     //agreagacion los estados para las particiones del disco
