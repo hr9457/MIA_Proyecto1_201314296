@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <cstring>
+#include <stdlib.h>
 #include <vector>
 #include <dirent.h>
 using namespace std;
@@ -15,6 +16,9 @@ public:
     vector<string> split(string,char);
     string eliminacionComillas(string);
     bool is_file(string file);
+    string aMayuscula(string);
+    string aMinuscula(string);
+    void limpiarVector(string []);
 };
 
 #endif // FUNCIONES_H

@@ -10,6 +10,7 @@
 #include <fstream>
 #include <Estructuras/structs.h>
 #include <time.h>
+#include "libreria/funciones.h"
 using namespace std;
 
 class mkdisk
@@ -20,7 +21,8 @@ private:
     const char separador = '/';
     string nombreDisco = "";
     string pesoArchivo = "m"; 
-    string fit = "bf";   
+    string fit = "bf";  
+    funciones FUN; 
 
 public:
     mkdisk();

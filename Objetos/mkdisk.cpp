@@ -17,7 +17,7 @@ void mkdisk::crearDisco(string parametros[])
         this->rutaArchivo = parametros[1];
 
         /*verificacion del atributo para el cambio del peso en el archivo*/
-        if(parametros[2].empty() != true){this->pesoArchivo=parametros[2];}
+        if(parametros[2].empty() != true){this->pesoArchivo=FUN.aMayuscula(parametros[2]);}
 
         /*verificacion del artribuo fit para el cambio de ajuste*/
         if(parametros[3].empty() != true){cambioAjuste(parametros[3]);}

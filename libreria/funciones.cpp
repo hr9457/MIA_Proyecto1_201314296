@@ -46,3 +46,26 @@ bool funciones::is_file(string file)
         return false;
     }
 }
+
+
+/* metodo par convertir un string a mayusculas */
+string funciones::aMayuscula(string cadena)
+{
+  for (int i = 0; i < cadena.length(); i++) cadena[i] = toupper(cadena[i]);
+  return cadena;   
+}
+
+
+/* metodo para convertir un string a minusculas */
+string aMinuscula(string cadena) 
+{
+  for (int i = 0; i < cadena.length(); i++) cadena[i] = tolower(cadena[i]);
+  return cadena;
+}
+
+/* metodo para limpiar cualquier vector */
+void funciones::limpiarVector(string limpieza[])
+{
+    int tamanio = sizeof(limpieza)/sizeof(*limpieza);
+    cout<<"El tamanio del vector a limpiar es de: "<<tamanio<<endl;
+}
