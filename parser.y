@@ -7,6 +7,7 @@
 #include <vector>
 #include "Objetos/mkdisk.h"
 #include "Objetos/rmdisk.h"
+#include "Objetos/exec.h"
 //#include "obmkdisk.h"
 using namespace std;
 extern int yylineno; //linea actual donde se encuentra el parser (analisis lexico) lo maneja BISON
@@ -17,6 +18,7 @@ extern char *yytext; //lexema actual donde esta el parser (analisis lexico) lo m
 vector<string> parametrosMkdisk;
 string mkdiskParametros[4];
 string rmdiskParametros;
+string execParametro;
 
 int yyerror(const char* mens)
 {
@@ -43,6 +45,7 @@ char TEXT[256];
 %token<TEXT> tk_mkdisk;
 %token<TEXT> tk_rmdisk;
 %token<TEXT> tk_fdisk;
+%token<TEXT> tk_exec;
 
 %token<TEXT> tk_size;
 %token<TEXT> tk_path;
@@ -60,6 +63,7 @@ char TEXT[256];
 %token<TEXT> cadena;
 %token<TEXT> identificador;
 %token<TEXT> tk_ruta;
+%token<TEXT> comentario;
 
 //%type<int> PARAMETROS_MKDISK;
 //%type<mkdisk> MKDISK;
@@ -76,7 +80,13 @@ LISTADO_COMANDOS: LISTADO_COMANDOS COMANDO
 
 
 COMANDO : MKDISK {mkdisk disco; disco.crearDisco(mkdiskParametros);}
-        | RMDSIK {rmdisk eliminacion; eliminacion.eliminarDisco(rmdiskParametros);} ;
+        | RMDSIK {rmdisk eliminacion; eliminacion.eliminarDisco(rmdiskParametros);}
+        | EXEC   {exec read; read.leerArchivo(execParametro);}
+        | COMENTARIO {cout<<"-->Comentario"<<endl;} 
+        ;
+
+
+COMENTARIO : comentario {} ;
 
 
 MKDISK : tk_mkdisk LIST_PARAMETROS_MKDISK ;
@@ -94,4 +104,10 @@ PARAMETROS_MKDISK : guion tk_size igual entero      {mkdiskParametros[0]=$4;}
                   ;
 
 RMDSIK : tk_rmdisk guion tk_path igual cadena  {rmdiskParametros=$5;}
-       | tk_rmdisk guion tk_path igual tk_ruta {rmdiskParametros=$5;} ;
+       | tk_rmdisk guion tk_path igual tk_ruta {rmdiskParametros=$5;} 
+       ;
+
+
+EXEC : tk_exec guion tk_path igual cadena     {execParametro=$5;}
+     | tk_exec guion tk_path igual tk_ruta    {execParametro=$5;}
+     ;

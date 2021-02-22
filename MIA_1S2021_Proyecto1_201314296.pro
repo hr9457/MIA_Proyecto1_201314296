@@ -14,7 +14,8 @@ SOURCES += main.cpp \
     parser.cpp \
     Objetos/mkdisk.cpp \
     Objetos/rmdisk.cpp \
-    libreria/funciones.cpp
+    libreria/funciones.cpp \
+    Objetos/exec.cpp
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -40,4 +41,5 @@ HEADERS += \
     parser.y \
     Estructuras/structs.h \
     Objetos/rmdisk.h \
-    libreria/funciones.h
+    libreria/funciones.h \
+    Objetos/exec.h
