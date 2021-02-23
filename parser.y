@@ -2,23 +2,32 @@
 #include "scanner.h"//se importa el header del analisis sintactico
 #include <QString>
 #include <string>
+#include <cstring>
+#include <stdlib.h>
 #include "qdebug.h"
 #include <iostream>
 #include <vector>
+#include <dirent.h>
+#include <stdio.h>
 #include "Objetos/mkdisk.h"
 #include "Objetos/rmdisk.h"
 #include "Objetos/exec.h"
+#include "libreria/funciones.h"
 //#include "obmkdisk.h"
 using namespace std;
 extern int yylineno; //linea actual donde se encuentra el parser (analisis lexico) lo maneja BISON
 extern int columna; //columna actual donde se encuentra el parser (analisis lexico) lo maneja BISON
 extern char *yytext; //lexema actual donde esta el parser (analisis lexico) lo maneja BISON
 
+
 /*vectores para los parametros de cada comando*/
 vector<string> parametrosMkdisk;
 string mkdiskParametros[4];
 string rmdiskParametros;
 string execParametro;
+string fdiskParametros[8];
+int indice = 0;
+
 
 int yyerror(const char* mens)
 {
@@ -51,6 +60,9 @@ char TEXT[256];
 %token<TEXT> tk_path;
 %token<TEXT> tk_f;
 %token<TEXT> tk_u;
+%token<TEXT> tk_name;
+%token<TEXT> tk_add;
+%token<TEXT> tk_delete;
 
 %token<TEXT> guion;
 %token<TEXT> igual;
@@ -79,10 +91,11 @@ LISTADO_COMANDOS: LISTADO_COMANDOS COMANDO
                 | COMANDO ; 
 
 
-COMANDO : MKDISK {mkdisk disco; disco.crearDisco(mkdiskParametros);}
+COMANDO : MKDISK {mkdisk disco; disco.crearDisco(mkdiskParametros);for(int i=0;i<sizeof(mkdiskParametros)/sizeof(mkdiskParametros[0]);i++){mkdiskParametros[i]="";}}
         | RMDSIK {rmdisk eliminacion; eliminacion.eliminarDisco(rmdiskParametros);}
         | EXEC   {exec read; read.leerArchivo(execParametro);}
-        | COMENTARIO {cout<<"-->Comentario"<<endl;} 
+        | COMENTARIO {}
+        | FDISK {} 
         ;
 
 
@@ -106,6 +119,22 @@ PARAMETROS_MKDISK : guion tk_size igual entero      {mkdiskParametros[0]=$4;}
 RMDSIK : tk_rmdisk guion tk_path igual cadena  {rmdiskParametros=$5;}
        | tk_rmdisk guion tk_path igual tk_ruta {rmdiskParametros=$5;} 
        ;
+
+
+
+FDISK : tk_fdisk LIST_PARAMETROS_FDISK {}
+      ;
+
+LIST_PARAMETROS_FDISK   : LIST_PARAMETROS_FDISK PARAMETROS_FDISK
+                        | PARAMETROS_FDISK
+                        ;
+
+PARAMETROS_FDISK        : guion tk_path igual cadena            {fdiskParametros[0]=$4;}
+                        | guion tk_path igual tk_ruta           {fdiskParametros[0]=$4;}}
+                        | guion tk_add igual entero             {fdiskParametros[1]=$4;}
+                        | guion tk_delete igual identificador   {fdiskParametros[2]=$4;} 
+                        ;
+
 
 
 EXEC : tk_exec guion tk_path igual cadena     {execParametro=$5;}

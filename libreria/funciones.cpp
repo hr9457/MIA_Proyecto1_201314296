@@ -57,15 +57,38 @@ string funciones::aMayuscula(string cadena)
 
 
 /* metodo para convertir un string a minusculas */
-string aMinuscula(string cadena) 
+string funciones::aMinuscula(string cadena) 
 {
-  for (int i = 0; i < cadena.length(); i++) cadena[i] = tolower(cadena[i]);
+  for (int i = 0; i < cadena.length(); i++) 
+  {cadena[i] = tolower(cadena[i]);}
   return cadena;
 }
 
 /* metodo para limpiar cualquier vector */
 void funciones::limpiarVector(string limpieza[])
 {
-    int tamanio = sizeof(limpieza)/sizeof(*limpieza);
+    int tamanio = sizeof(limpieza)/sizeof(limpieza[0]);
     cout<<"El tamanio del vector a limpiar es de: "<<tamanio<<endl;
+}
+
+
+// metodo para buscar un elemento dentro de un array
+bool funciones::buscarElemento(string arreglo[],string elemento)
+{
+    string nombreActual;
+    bool resultado;
+    for(int i = 0; i < sizeof(arreglo)/sizeof(arreglo[0]); i++ )
+    {
+        nombreActual = arreglo[i];
+        if(nombreActual == elemento)
+        {
+            resultado = true;
+            break;
+        }
+    }
+    // retorno a la busqueda
+    if(resultado)
+    {return true;}
+    else
+    {return false;}
 }

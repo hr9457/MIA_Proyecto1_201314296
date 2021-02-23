@@ -11,6 +11,8 @@
 #include "libreria/funciones.h"
 using namespace std;
 
+//exec -path=/home/hector/prueba/calificacion.script
+
 class exec
 {
 private:

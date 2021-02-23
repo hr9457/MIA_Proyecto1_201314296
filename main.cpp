@@ -1,4 +1,5 @@
 #include <QCoreApplication>
+#include <string>
 #include "iostream"
 #include <QString>
 #include <parser.h>  // Nuestro parser
@@ -35,8 +36,7 @@ int main(int argc, char *argv[])
                 }else {
                     printf("\n\nhay errores\n\n");
                 }
-
-            }
+            }            
         }
     }
 }
