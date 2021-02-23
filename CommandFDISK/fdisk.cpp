@@ -11,47 +11,37 @@ void fdisk::ejecutarFdisk(string parametros[])
     if(parametros[0].empty() != true)
     {
         this->rutaArchivo = parametros[0];
-        if(rutaArchivo[0] == '\"')
+        // verificacion de comillas en la ruta
+        verificacionComillas(this->rutaArchivo);
+        // verificacion de la existencia del disco
+        if(verificacionDisco(this->rutaArchivo))
         {
-            this->rutaArchivo = FUN.eliminacionComillas(rutaArchivo);
-            // verificacion de la existencia del disco
-            if(verificacionDisco(rutaArchivo))
+            // verificacion comando add y delete no vengan juntos
+            if(addDelete(parametros))
             {
-                // verificacion comando add y delete no vengan juntos
-                if(addDelete(parametros))
-                {
-                    // verificacion que los parametros size y add no vengan juntos
-                    if(sizeAdd(parametros))
-                    {}
+                // verificacion que los parametros size y add no vengan juntos
+                if(sizeAdd(parametros))
+                {                    
                 }
             }
         }
-        else
-        {
-            // verificacion de la existencia del disco
-            if(verificacionDisco(rutaArchivo))
-            {
-                // verificacion comando add y delete no vengan juntos
-                if(addDelete(parametros))
-                {
-                    // verificacion que los parametros size y add no vengan juntos
-                    if(sizeAdd(parametros))
-                    {}
-                }
-            }
-        }
+
     }
     else
     { cout<<"-->Parametros Obligatorios faltantes: path"<<endl;}
 }
 
 
-bool fdisk::verificacionComillas(string rutaArchivo)
+void fdisk::verificacionComillas(string rutaArchivo)
 {
     if(rutaArchivo[0] == '\"')
-    {}
+    {
+        this->rutaArchivo = FUN.eliminacionComillas(rutaArchivo);
+    }
     else
-    {}
+    {
+        this->rutaArchivo = rutaArchivo;
+    }
 }
 
 // funcion para la verificacion de la existencia del archivo

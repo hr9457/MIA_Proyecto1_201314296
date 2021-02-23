@@ -13,7 +13,10 @@ class fdisk
 private:
     string rutaArchivo;
     funciones FUN;
-    bool verificacionComillas(string);
+    string tamanioParticion = "k";
+    string typeParticion = "p";
+    string tipoAjuste = "wf";
+    void verificacionComillas(string);
     bool verificacionDisco(string);
     bool addDelete(string []);
     bool sizeAdd(string[]);

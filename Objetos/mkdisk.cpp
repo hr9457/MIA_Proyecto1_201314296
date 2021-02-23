@@ -114,31 +114,24 @@ void mkdisk::crearFichero(string rutaArchivo)
         exit(1);
     
     //char para llenado del archivo
-    char buffer[1024];
+    char buffer = '\0';
 
     // comparacion para el peso del archivo binario
     if(pesoArchivo == "k")
     {    
-        int pesoKilobytes = this->size*1024;
-        tamanioArchivo = this->size*1024;
-        for(int i=0;i<1024;i++)
-            buffer[i] = '\0';        
+        int pesoKilobytes = this->size*1024;        
         //for para el llenado de 0 en el archivo
-        for(int i=0;i<this->size;i++)
-            fwrite(&buffer,1024,1,archivo);
+        for(int i=0;i<pesoKilobytes;i++)
+            fwrite(&buffer,1,1,archivo);
         //cierre del archivo
         fclose(archivo);
     }
     else
     {
-        int pesoMegabytes = this->size;
-        tamanioArchivo = this->size*1024*1024;
+        int pesoMegabytes = this->size*1024*1024;
         //for para el llenado de 0 en el archivo
-        for(int i=0;i<1024;i++)
-            buffer[i] = '\0'; 
-        //for para el llenado de 0 en el archivo
-        for(int i=0;i<this->size*1024;i++)
-            fwrite(&buffer,1024,1,archivo); 
+        for(int i=0;i<pesoMegabytes;i++)
+            fwrite(&buffer,1,1,archivo); 
         //cierre del archivo
         fclose(archivo);
     }
