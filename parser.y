@@ -12,6 +12,7 @@
 #include "Objetos/mkdisk.h"
 #include "Objetos/rmdisk.h"
 #include "Objetos/exec.h"
+#include "CommandFDISK/fdisk.h"
 #include "libreria/funciones.h"
 //#include "obmkdisk.h"
 using namespace std;
@@ -91,11 +92,11 @@ LISTADO_COMANDOS: LISTADO_COMANDOS COMANDO
                 | COMANDO ; 
 
 
-COMANDO : MKDISK {mkdisk disco; disco.crearDisco(mkdiskParametros);for(int i=0;i<sizeof(mkdiskParametros)/sizeof(mkdiskParametros[0]);i++){mkdiskParametros[i]="";}}
-        | RMDSIK {rmdisk eliminacion; eliminacion.eliminarDisco(rmdiskParametros);}
-        | EXEC   {exec read; read.leerArchivo(execParametro);}
-        | COMENTARIO {}
-        | FDISK {} 
+COMANDO : MKDISK        {mkdisk disco; disco.crearDisco(mkdiskParametros);for(int i=0;i<sizeof(mkdiskParametros)/sizeof(mkdiskParametros[0]);i++){mkdiskParametros[i]="";}}
+        | RMDSIK        {rmdisk eliminacion; eliminacion.eliminarDisco(rmdiskParametros);}
+        | FDISK         {fdisk manejoParticiones;manejoParticiones.ejecutarFdisk(fdiskParametros);} 
+        | EXEC          {exec read; read.leerArchivo(execParametro);}
+        | COMENTARIO    {}        
         ;
 
 
@@ -130,9 +131,10 @@ LIST_PARAMETROS_FDISK   : LIST_PARAMETROS_FDISK PARAMETROS_FDISK
                         ;
 
 PARAMETROS_FDISK        : guion tk_path igual cadena            {fdiskParametros[0]=$4;}
-                        | guion tk_path igual tk_ruta           {fdiskParametros[0]=$4;}}
+                        | guion tk_path igual tk_ruta           {fdiskParametros[0]=$4;}
                         | guion tk_add igual entero             {fdiskParametros[1]=$4;}
-                        | guion tk_delete igual identificador   {fdiskParametros[2]=$4;} 
+                        | guion tk_delete igual identificador   {fdiskParametros[2]=$4;}
+                        | guion tk_size igual entero            {fdiskParametros[3]=$4;}                        
                         ;
 
 
