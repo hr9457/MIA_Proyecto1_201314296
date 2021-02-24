@@ -91,4 +91,23 @@ void fdisk::crearAgregarParticion(string parametros[])
 // metodo para crear particion en el disco
 void fdisk::crearParticion()
 {
+    FILE *archivo;
+    // apertura del disco para lectura y actualizacion rb+
+    archivo = fopen(rutaArchivo.c_str(),"rb+");
+    if(archivo==NULL)
+        exit(1);
+
+    // lectura del MBR en el disco
+    mbr MBR;
+    fseek(archivo,0,SEEK_SET); // inicio del archivo
+    fread(&MBR,sizeof(mbr),1,archivo);
+    // cierre del dico con los cambios
+    fclose(archivo);
+    cout<<"---Datos del Disco---"<<endl;
+    for(int i= 0;i<4;i++)
+    {
+        cout<<"---Particion No."<<i<<endl;
+        cout<<"  *"<<MBR.mbr_partitions[i].part_status<<endl; 
+        cout<<"  *"<<MBR.mbr_partitions[i].part_name<<endl; 
+    }
 }
