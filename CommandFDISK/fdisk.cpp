@@ -22,12 +22,11 @@ void fdisk::ejecutarFdisk(string parametros[])
                 // verificacion que los parametros size y add no vengan juntos
                 if(sizeAdd(parametros))
                 {  
-                    // si viene size o add
-                    crearAgregarParticion(parametros);                
-                }
-            }
-        }
-
+                    // // si viene size o add
+                    crearAgregarParticion(parametros);           
+                }                
+            }            
+        }        
     }
     else
     { cout<<"-->Parametros Obligatorios faltantes: path"<<endl;}
@@ -84,9 +83,12 @@ void fdisk::crearAgregarParticion(string parametros[])
     {
         crearParticion();
     }
-    else if(parametros[1].empty() != true)
-    {}
+    else
+    {
+    }
 }
+
+
 
 // metodo para crear particion en el disco
 void fdisk::crearParticion()
@@ -103,11 +105,43 @@ void fdisk::crearParticion()
     fread(&MBR,sizeof(mbr),1,archivo);
     // cierre del dico con los cambios
     fclose(archivo);
+
+    /* 
+    copia de las particiones dentro del disco para saber su 
+    orden segun su poscion dentro del disco 
+    status = 0 disco no utilizado
+    status = 1 disco utilizado
+    */    
+    // ordenar el listado de las particiones segun supocicion part_star    
     cout<<"---Datos del Disco---"<<endl;
     for(int i= 0;i<4;i++)
     {
         cout<<"---Particion No."<<i<<endl;
         cout<<"  *"<<MBR.mbr_partitions[i].part_status<<endl; 
+        cout<<"  *"<<MBR.mbr_partitions[i].part_star<<endl;
         cout<<"  *"<<MBR.mbr_partitions[i].part_name<<endl; 
+    }
+
+        
+    for(int i=0;i<4;i++)
+    {
+        partition particion;
+        if(MBR.mbr_partitions[i].part_status == '1')
+        {
+            particion.part_fit = MBR.mbr_partitions[i].part_fit;
+            particion.part_star = MBR.mbr_partitions[i].part_star;
+            particion.part_size = MBR.mbr_partitions[i].part_size;
+            copia.push_back(particion);
+        }        
+    }
+    cout<<"*****************************************************"<<endl;
+    cout<<"-->copia de las particiones utilizadas en el disco"<<endl;
+    cout<<"-->Size: "<<copia.size()<<endl;    
+    for(int i=0;i<copia.size();i++)
+    {
+        cout<<"---Particion No."<<i<<endl;
+        cout<<"  *"<<copia[i].part_fit<<endl; 
+        cout<<"  *"<<copia[i].part_star<<endl; 
+        cout<<"  *"<<copia[i].part_size<<endl; 
     }
 }
