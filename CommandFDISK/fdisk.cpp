@@ -21,7 +21,9 @@ void fdisk::ejecutarFdisk(string parametros[])
             {
                 // verificacion que los parametros size y add no vengan juntos
                 if(sizeAdd(parametros))
-                {                    
+                {  
+                    // si viene size o add
+                    crearAgregarParticion(parametros);                
                 }
             }
         }
@@ -72,4 +74,21 @@ bool fdisk::sizeAdd(string parametros[])
     { cout<<"-->parametros size y add incompatibles"<<endl; return false; }
     else
     { return true; } 
+}
+
+// metodo para verificacion si se creara una particion o agreagar a una particion espacio
+void fdisk::crearAgregarParticion(string parametros[])
+{
+    // parametro add en posicion 1, parametro size en posicion 3
+    if(parametros[3].empty() != true)
+    {
+        crearParticion();
+    }
+    else if(parametros[1].empty() != true)
+    {}
+}
+
+// metodo para crear particion en el disco
+void fdisk::crearParticion()
+{
 }

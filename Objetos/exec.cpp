@@ -46,15 +46,17 @@ void exec::cargarArchivo(string rutaArchivo)
             while(!fichero.eof())
             {
                 getline(fichero,lineaComando);
-                cout<<lineaComando<<endl;
-                YY_BUFFER_STATE buffer = yy_scan_string(lineaComando.c_str());
-                linea = 0;
-                columna = 0;
-                yylineno = 0;
-                if(yyparse()!=0) // Si nos da un número negativo, signifca error.
-                {
-                    printf("\n\nhay errores\n\n");
-                }               
+                if(lineaComando.empty()==false){
+                    cout<<lineaComando<<endl;
+                    YY_BUFFER_STATE buffer = yy_scan_string(lineaComando.c_str());
+                    linea = 0;
+                    columna = 0;
+                    yylineno = 0;
+                    if(yyparse()!=0) // Si nos da un número negativo, signifca error.
+                    {
+                        printf("\n\nhay errores\n\n");
+                    } 
+                }              
             }
             fichero.close();
         }

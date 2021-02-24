@@ -77,4 +77,13 @@ struct inodos
 };
 
 
+/* Estructura par las particiones en blaco */
+struct blackPartition
+{
+    /* data */
+    int part_star;
+    int part_size;
+};
+
+
 #endif // STRUCTS_H
