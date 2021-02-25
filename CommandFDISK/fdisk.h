@@ -9,7 +9,6 @@
 #include <fstream>
 #include <vector>
 #include <cstdlib>
-//#include <algorithm>
 #include "libreria/funciones.h"
 #include "Estructuras/structs.h"
 using namespace std;
@@ -24,6 +23,7 @@ private:
     string tipoAjuste = "wf";
     // lista para los espacios en blanco
     vector<partition> copia; 
+    vector<blackPartition> particionesLibres;
     void verificacionComillas(string);
     bool verificacionDisco(string);
     bool addDelete(string []);

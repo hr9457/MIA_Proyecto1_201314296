@@ -93,9 +93,10 @@ void fdisk::crearAgregarParticion(string parametros[])
 // metodo para crear particion en el disco
 void fdisk::crearParticion()
 {
+    int tamanioDisco;
     FILE *archivo;
     // apertura del disco para lectura y actualizacion rb+
-    archivo = fopen(rutaArchivo.c_str(),"rb+");
+    archivo = fopen(rutaArchivo.c_str(),"rb+");    
     if(archivo==NULL)
         exit(1);
 
@@ -112,13 +113,16 @@ void fdisk::crearParticion()
     status = 0 disco no utilizado
     status = 1 disco utilizado
     */    
-    // ordenar el listado de las particiones segun supocicion part_star    
+    tamanioDisco = MBR.mbr_tamanio;// tamanio del disco que estamos leendo
+    // ordenar el listado de las particiones segun supocicion part_star
+    // impresion de datos del disco que estamos leendo 
     cout<<"---Datos del Disco---"<<endl;
     for(int i= 0;i<4;i++)
     {
         cout<<"---Particion No."<<i<<endl;
         cout<<"  *"<<MBR.mbr_partitions[i].part_status<<endl; 
         cout<<"  *"<<MBR.mbr_partitions[i].part_star<<endl;
+        cout<<"  *"<<MBR.mbr_partitions[i].part_size<<endl;
         cout<<"  *"<<MBR.mbr_partitions[i].part_name<<endl; 
     }
 
@@ -144,4 +148,75 @@ void fdisk::crearParticion()
         cout<<"  *"<<copia[i].part_star<<endl; 
         cout<<"  *"<<copia[i].part_size<<endl; 
     }
+    // ordenamiento de la copia con las particiones llenas en el disco
+    // ordenamiento burbuja
+    for(int i=0;i<copia.size()-1;i++)
+    {
+        for(int j=i+1;j<copia.size();j++)
+        {
+            if(copia[i].part_size > copia[j].part_size)
+            {
+                partition aux = copia[i];
+                copia[i] = copia[j];
+                copia[j] = aux;
+            }
+        }
+    }
+
+    cout<<"*************************"<<endl;
+    cout<<"****ordenamiento de las particiones"<<endl;
+    for(int i=0;i<copia.size();i++)
+    {
+        cout<<"---Particion No."<<i<<endl;
+        cout<<"  *"<<copia[i].part_fit<<endl; 
+        cout<<"  *"<<copia[i].part_star<<endl; 
+        cout<<"  *"<<copia[i].part_size<<endl; 
+    }
+    
+    // crecion de una lista con los espacios en blanco dentro del disco
+    int inicio = sizeof(MBR);
+    int inicioParticion;
+    int sizeDisco;
+    int espacioLibre;
+    int inicioAnterior;
+    cout<<endl;
+    cout<<endl;
+    cout<<"tamanio de la lista"<<copia.size()<<endl;
+    for(int disco=0; disco<copia.size(); disco++)
+    {
+        inicioParticion = copia[disco].part_star;
+        espacioLibre = inicioParticion - inicio;
+        inicioAnterior = inicio;
+        inicio = inicioParticion + copia[disco].part_size;
+        //guardamos los epacios en blanco
+        blackPartition particionLibre;
+        particionLibre.part_star = inicioAnterior;
+        particionLibre.part_size = espacioLibre;
+        particionesLibres.push_back(particionLibre); 
+    }    
+
+    // condicion final si llego al final del disco
+    if(inicio < MBR.mbr_tamanio)
+    {
+        espacioLibre = MBR.mbr_tamanio - inicio;
+        blackPartition finalLibre;
+        finalLibre.part_star = inicio;
+        finalLibre.part_size = espacioLibre;
+        particionesLibres.push_back(finalLibre);
+    }
+    
+    // impresion de los espacios en blanco dentro del disco
+    cout<<"******Espcios en Blanco*********"<<endl;
+    cout<<"Tamanio del disco: "<<tamanioDisco<<endl;
+    for(int inicio = 0;inicio<particionesLibres.size();inicio++)
+    {
+        cout<<"Particion Libre No."<<inicio<<endl;
+        cout<<"Espacio: "<<particionesLibres[inicio].part_size<<endl;
+        cout<<"Inicio: "<<particionesLibres[inicio].part_star<<endl;
+        cout<<endl;
+        cout<<endl;
+    }
+    
+    cout<<"********************************************"<<endl;
+    cout<<"tamanio del disco en bytes es:"<<tamanioDisco<<endl;
 }

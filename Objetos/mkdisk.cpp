@@ -119,7 +119,8 @@ void mkdisk::crearFichero(string rutaArchivo)
     // comparacion para el peso del archivo binario
     if(pesoArchivo == "k")
     {    
-        int pesoKilobytes = this->size*1024;        
+        int pesoKilobytes = this->size*1024;  
+        tamanioArchivo = pesoKilobytes;      
         //for para el llenado de 0 en el archivo
         for(int i=0;i<pesoKilobytes;i++)
             fwrite(&buffer,1,1,archivo);
@@ -129,6 +130,7 @@ void mkdisk::crearFichero(string rutaArchivo)
     else
     {
         int pesoMegabytes = this->size*1024*1024;
+        tamanioArchivo = pesoMegabytes;
         //for para el llenado de 0 en el archivo
         for(int i=0;i<pesoMegabytes;i++)
             fwrite(&buffer,1,1,archivo); 
@@ -161,36 +163,36 @@ void mkdisk::crearMBR(FILE *archivo,int tamanioArchivo)
     strcpy( MBR.mbr_fit,this->fit.c_str());
     //agreagacion los estados para las particiones del disco
     //quemando disco de prueba para el fdisk
-    /*
-    partition PA;
-    PA.part_status = '0';
-    PA.part_type   = '-';
-    PA.part_fit    = '-';
-    PA.part_star   = -1 ;
-    PA.part_size   = -1 ;
+    
+    // partition PA;
+    // PA.part_status = '0';
+    // PA.part_type   = '-';
+    // PA.part_fit    = '-';
+    // PA.part_star   = -1 ;
+    // PA.part_size   = -1 ;
 
-    partition PARTICION;
-    PARTICION.part_status = '1';
-    PARTICION.part_type   = 'p';
-    PARTICION.part_fit    = 'f';
-    PARTICION.part_star   = 291 ;
-    PARTICION.part_size   = 100 ;
-    strcpy(PARTICION.part_name,"P3");
+    // partition PARTICION;
+    // PARTICION.part_status = '1';
+    // PARTICION.part_type   = 'p';
+    // PARTICION.part_fit    = 'f';
+    // PARTICION.part_star   = 291 ;
+    // PARTICION.part_size   = 100 ;
+    // strcpy(PARTICION.part_name,"P3");
 
-    partition PARTICION2;
-    PARTICION2.part_status = '1';
-    PARTICION2.part_type   = 'p';
-    PARTICION2.part_fit    = 'f';
-    PARTICION2.part_star   = 391 ;
-    PARTICION2.part_size   = 200 ;
-    strcpy(PARTICION2.part_name,"P2");
+    // partition PARTICION2;
+    // PARTICION2.part_status = '1';
+    // PARTICION2.part_type   = 'p';
+    // PARTICION2.part_fit    = 'f';
+    // PARTICION2.part_star   = 391 ;
+    // PARTICION2.part_size   = 200 ;
+    // strcpy(PARTICION2.part_name,"P2");
 
-    //insertando el disco de prueba las particiones
-    MBR.mbr_partitions[0] = PA;
-    MBR.mbr_partitions[1] = PARTICION;
-    MBR.mbr_partitions[2] = PARTICION2;
-    MBR.mbr_partitions[3] = PA;
-    */
+    // //insertando el disco de prueba las particiones
+    // MBR.mbr_partitions[0] = PA;
+    // MBR.mbr_partitions[1] = PARTICION;
+    // MBR.mbr_partitions[2] = PARTICION2;
+    // MBR.mbr_partitions[3] = PA;
+    
     
     partition PARTICION;
     PARTICION.part_status = '0';
