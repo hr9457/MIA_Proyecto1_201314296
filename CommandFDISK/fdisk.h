@@ -29,7 +29,7 @@ private:
     bool addDelete(string []);
     bool sizeAdd(string[]);
     void crearAgregarParticion(string []);
-    void obtenerEspacios();
+    void encontrarEspaciosLibres();
     void crearParticion();
 public:
     fdisk();
