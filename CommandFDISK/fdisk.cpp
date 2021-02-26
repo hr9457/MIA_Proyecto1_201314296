@@ -90,8 +90,6 @@ void fdisk::crearAgregarParticion(string parametros[])
 
 
 // buscar espacios libres dentro del disco
-
-// ordenar espacios libres 
 void fdisk::encontrarEspaciosLibres()
 {
     int tamanioDisco;
@@ -197,6 +195,12 @@ void fdisk::encontrarEspaciosLibres()
         cout<<endl;
         cout<<endl;
     }
+}
+
+
+// ordenar espacios en blanco
+void fdisk::ordenarEspaciosLibres()
+{
 }
 
 // metodo para crear particion en el disco

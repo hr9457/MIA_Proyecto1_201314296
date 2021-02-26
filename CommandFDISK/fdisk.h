@@ -30,6 +30,7 @@ private:
     bool sizeAdd(string[]);
     void crearAgregarParticion(string []);
     void encontrarEspaciosLibres();
+    void ordenarEspaciosLibres();
     void crearParticion();
 public:
     fdisk();
