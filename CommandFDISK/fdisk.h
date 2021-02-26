@@ -21,6 +21,7 @@ private:
     string tamanioParticion = "k";
     string typeParticion = "p";
     string tipoAjuste = "wf";
+    char ajuste;
     // lista para los espacios en blanco
     vector<partition> copia; 
     vector<blackPartition> particionesLibres;

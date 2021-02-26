@@ -22,7 +22,7 @@ struct mbr
     int mbr_tamanio;
     char mbr_fecha_creacion[16];
     int mbr_disk_signature;
-    char mbr_fit[1];
+    char mbr_fit;
     partition mbr_partitions[4];
 };
 

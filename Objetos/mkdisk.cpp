@@ -160,7 +160,7 @@ void mkdisk::crearMBR(FILE *archivo,int tamanioArchivo)
     MBR.mbr_tamanio = tamanioArchivo;
     strcpy ( MBR.mbr_fecha_creacion, bufferInfo);
     MBR.mbr_disk_signature = (rand() % 100);
-    strcpy( MBR.mbr_fit,this->fit.c_str());
+    MBR.mbr_fit = this->fit;
     //agreagacion los estados para las particiones del disco
     //quemando disco de prueba para el fdisk
     
@@ -224,12 +224,12 @@ void mkdisk::crearMBR(FILE *archivo,int tamanioArchivo)
 void mkdisk::cambioAjuste(string tipoAjuste)
 {
     //mejor ajuste, primer ajuste, peor ajuste
-    if(tipoAjuste == "fb" || tipoAjuste == "FB")
-    {this->fit = tipoAjuste;}
+    if(tipoAjuste == "bf" || tipoAjuste == "BF")
+    {this->fit = 'b';}
     else if(tipoAjuste == "ff" || tipoAjuste == "FF")
-    {this->fit = tipoAjuste;}
+    {this->fit = 'f';}
     else if(tipoAjuste == "wf" || tipoAjuste == "WF")
-    {this->fit = tipoAjuste;}
+    {this->fit = 'w';}
     else
     {cout<<"Tipo de ajuste no se reconoce se asignado el FB"<<endl;}
 }

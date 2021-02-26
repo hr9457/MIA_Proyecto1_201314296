@@ -113,6 +113,7 @@ void fdisk::encontrarEspaciosLibres()
     status = 1 disco utilizado
     */    
     tamanioDisco = MBR.mbr_tamanio;// tamanio del disco que estamos leendo
+    //ajuste = MBR.mbr_fit;
     // ordenar el listado de las particiones segun supocicion part_star
     // impresion de datos del disco que estamos leendo 
     cout<<"---Datos del Disco---"<<endl;
@@ -130,7 +131,6 @@ void fdisk::encontrarEspaciosLibres()
         partition particion;
         if(MBR.mbr_partitions[i].part_status == '1')
         {
-            particion.part_fit = MBR.mbr_partitions[i].part_fit;
             particion.part_star = MBR.mbr_partitions[i].part_star;
             particion.part_size = MBR.mbr_partitions[i].part_size;
             copia.push_back(particion);
