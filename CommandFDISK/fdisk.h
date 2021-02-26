@@ -22,6 +22,7 @@ private:
     string typeParticion = "p";
     string tipoAjuste = "wf";
     char ajuste;
+    int sizeParticion;
     // lista para los espacios en blanco
     vector<partition> copia; 
     vector<blackPartition> particionesLibres;
@@ -32,7 +33,10 @@ private:
     void crearAgregarParticion(string []);
     void encontrarEspaciosLibres();
     void ordenarEspaciosLibres();
-    void crearParticion();
+    void buscarDentroParticion(int);
+    void ordenAscedente();
+    void ordenDscedente();
+    void crearParticion(int);
 public:
     fdisk();
     void ejecutarFdisk(string []);

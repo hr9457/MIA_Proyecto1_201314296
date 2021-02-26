@@ -81,7 +81,8 @@ void fdisk::crearAgregarParticion(string parametros[])
     // parametro add en posicion 1, parametro size en posicion 3
     if(parametros[3].empty() != true)
     {
-        crearParticion();
+        sizeParticion = atoi(parametros[3].c_str());
+        crearParticion(sizeParticion);
     }
     else
     {
@@ -113,7 +114,7 @@ void fdisk::encontrarEspaciosLibres()
     status = 1 disco utilizado
     */    
     tamanioDisco = MBR.mbr_tamanio;// tamanio del disco que estamos leendo
-    //ajuste = MBR.mbr_fit;
+    ajuste = MBR.mbr_fit;
     // ordenar el listado de las particiones segun supocicion part_star
     // impresion de datos del disco que estamos leendo 
     cout<<"---Datos del Disco---"<<endl;
@@ -143,7 +144,7 @@ void fdisk::encontrarEspaciosLibres()
     {
         for(int j=i+1;j<copia.size();j++)
         {
-            if(copia[i].part_size > copia[j].part_size)
+            if(copia[i].part_star > copia[j].part_star)
             {
                 partition aux = copia[i];
                 copia[i] = copia[j];
@@ -198,15 +199,55 @@ void fdisk::encontrarEspaciosLibres()
 }
 
 
-// ordenar espacios en blanco
+
+
+// ordenar espacios en blanco segun el tipo de ajuste
 void fdisk::ordenarEspaciosLibres()
 {
+    /*
+    ordenamiento de los espacios libres
+    mejor ajuste -   ascendente
+    primer ajuste -  no se ordena 
+    peor ajuste -    descedente
+    */
+   if(ajuste == 'f')
+   {
+       // primer ajuste no se ordena la lista busca el primer espacio
+   }
+   else if(ajuste == 'b')
+   {
+       // mejor ajuste
+   }   
+   else if(ajuste == 'w')
+   {
+       // peor ajuste
+   }
 }
 
+
+// funcion para buscar dentro de las particiones la que mejor se adecue 
+void fdisk::buscarDentroParticion(int sizeParticion)
+{
+    for(int inicio = 0; inicio < particionesLibres.size(); inicio++)
+    {
+        if(sizeParticion <= particionesLibres[inicio].part_size )
+        {
+            cout<<"Particion a insertar en la posicion No."<<inicio<<endl;
+            break;
+        }
+    }
+}
+
+
+
 // metodo para crear particion en el disco
-void fdisk::crearParticion()
+void fdisk::crearParticion(int sizeParticion)
 {
     //  busco los espacios libres dentro del disco
     encontrarEspaciosLibres();
-    //  ordeno los espacios en blanco   
+    //  ordeno los espacios en blanco segun el fit del disco
+    //ordenarEspaciosLibres(); 
+    // busco donde pueda caber la particion que el usuario quiera ingresar
+    buscarDentroParticion(sizeParticion);
+    // 
 }
