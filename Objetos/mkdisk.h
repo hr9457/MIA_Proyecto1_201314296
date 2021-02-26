@@ -21,7 +21,7 @@ private:
     const char separador = '/';
     string nombreDisco = "";
     string pesoArchivo = "m"; 
-    char fit[1] = {'f'};  
+    string fit = "bf";  
     funciones FUN; 
 
 public:
