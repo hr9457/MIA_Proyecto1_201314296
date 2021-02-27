@@ -305,14 +305,49 @@ void fdisk::buscarDentroParticion(int sizeParticion)
     {
         if(sizeParticion <= particionesLibres[inicio].part_size )
         {
-            // escribir la nueva particion
+            // escribir la nueva particion - verico el tipo de particion a crear exista
             if(tipoParticion=='p'||tipoParticion=='e'||tipoParticion=='l')
             {
-                cout<<"Creacion de una particion tipo: "<<tipoParticion<<endl;
-                cout<<"particion de tamanio: "<<this->sizeParticion<<""<<this->u<<endl;
-                cout<<"Con fit de: "<<this->fitParticion<<endl;
-                cout<<"El nombre de: "<<this->name<<endl;
-                cout<<"EN PARTICION No."<<inicio<<endl;
+                // verifico la cantidada de particiones existentes
+                if(totalParticiones<4)
+                {
+                    // creacion de solo una particon extendida dentro del disco
+                    if(tipoParticion=='e' && contadorExtendidas<1)
+                    {
+                        cout<<"Creacion de una particion tipo: "<<tipoParticion<<endl;
+                        cout<<"particion de tamanio: "<<this->sizeParticion<<""<<this->u<<endl;
+                        cout<<"Con fit de: "<<this->fitParticion<<endl;
+                        cout<<"El nombre de: "<<this->name<<endl;
+                        cout<<"EN PARTICION No."<<inicio<<endl;
+                        break;
+                    }
+                    else if(tipoParticion=='l' && contadorExtendidas>1)
+                    {
+                        // creacion de partion logica si solo hay extendidas
+                        cout<<"Creacion de una particion tipo: "<<tipoParticion<<endl;
+                        cout<<"particion de tamanio: "<<this->sizeParticion<<""<<this->u<<endl;
+                        cout<<"Con fit de: "<<this->fitParticion<<endl;
+                        cout<<"El nombre de: "<<this->name<<endl;
+                        cout<<"EN PARTICION No."<<inicio<<endl;
+                        break;
+                    }
+                    else if(tipoParticion=='p')
+                    {
+                        // creacion particiones primarias
+                        cout<<"Creacion de una particion tipo: "<<tipoParticion<<endl;
+                        cout<<"particion de tamanio: "<<this->sizeParticion<<""<<this->u<<endl;
+                        cout<<"Con fit de: "<<this->fitParticion<<endl;
+                        cout<<"El nombre de: "<<this->name<<endl;
+                        cout<<"EN PARTICION No."<<inicio<<endl;
+                        break;
+                    }
+                }
+                else
+                {cout<<"-->El Disco ha llegado a su numero limite de particiones"<<endl;break;}                
+            }
+            else
+            {
+                cout<<"-->Tipo de particion no se puede crear"<<endl;
                 break;
             }            
         }

@@ -50,4 +50,4 @@ public:
 
 #endif // FDISK_H
 
-// fdisk -path=/home/hector/prueba/DiscoPrueba.dk -size=200 -add=200
+// fdisk -path=/home/hector/prueba/DiscoPrueba.dk -size=200 -add=200 
