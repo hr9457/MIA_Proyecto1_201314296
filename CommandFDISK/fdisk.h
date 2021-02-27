@@ -21,12 +21,16 @@ private:
     string tamanioParticion = "k";
     string typeParticion = "p";
     string tipoAjuste = "wf";
-    char ajuste;
+    char ajuste;    
+    string name,u,f,type;
     int sizeParticion;
+    char fitParticion='w';
+    char tipoParticion='p';
+    int contadorPrimarias,contadorExtendidas;
     // lista para los espacios en blanco
-    vector<partition> copia; 
+    vector<partition> copia;
     vector<blackPartition> particionesLibres;
-    void verificacionComillas(string);
+    string verificacionComillas(string);
     bool verificacionDisco(string);
     bool addDelete(string []);
     bool sizeAdd(string[]);
@@ -34,9 +38,11 @@ private:
     void encontrarEspaciosLibres();
     void ordenarEspaciosLibres();
     void buscarDentroParticion(int);
-    void ordenAscedente();
-    void ordenDscedente();
+    void ordenDescedente();
     void crearParticion(int);
+    void insertarParticion();
+    void impresionParticionesLibres();
+    void parametrosOPcrear(string []);
 public:
     fdisk();
     void ejecutarFdisk(string []);

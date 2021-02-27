@@ -64,6 +64,7 @@ char TEXT[256];
 %token<TEXT> tk_name;
 %token<TEXT> tk_add;
 %token<TEXT> tk_delete;
+%token<TEXT> tk_type;
 
 %token<TEXT> guion;
 %token<TEXT> igual;
@@ -134,7 +135,12 @@ PARAMETROS_FDISK        : guion tk_path igual cadena            {fdiskParametros
                         | guion tk_path igual tk_ruta           {fdiskParametros[0]=$4;}
                         | guion tk_add igual entero             {fdiskParametros[1]=$4;}
                         | guion tk_delete igual identificador   {fdiskParametros[2]=$4;}
-                        | guion tk_size igual entero            {fdiskParametros[3]=$4;}                        
+                        | guion tk_size igual entero            {fdiskParametros[3]=$4;}  
+                        | guion tk_name igual identificador     {fdiskParametros[4]=$4;}
+                        | guion tk_name igual cadena            {fdiskParametros[4]=$4;}
+                        | guion tk_type igual identificador     {fdiskParametros[5]=$4;}
+                        | guion tk_f igual identificador        {fdiskParametros[6]=$4;}
+                        | guion tk_u igual identificador        {fdiskParametros[7]=$4;}                         
                         ;
 
 

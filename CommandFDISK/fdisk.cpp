@@ -12,7 +12,7 @@ void fdisk::ejecutarFdisk(string parametros[])
     {
         this->rutaArchivo = parametros[0];
         // verificacion de comillas en la ruta
-        verificacionComillas(this->rutaArchivo);
+        this->rutaArchivo = verificacionComillas(this->rutaArchivo);
         // verificacion de la existencia del disco
         if(verificacionDisco(this->rutaArchivo))
         {
@@ -33,15 +33,15 @@ void fdisk::ejecutarFdisk(string parametros[])
 }
 
 
-void fdisk::verificacionComillas(string rutaArchivo)
+string fdisk::verificacionComillas(string rutaArchivo)
 {
     if(rutaArchivo[0] == '\"')
     {
-        this->rutaArchivo = FUN.eliminacionComillas(rutaArchivo);
+        return FUN.eliminacionComillas(rutaArchivo);
     }
     else
     {
-        this->rutaArchivo = rutaArchivo;
+        return rutaArchivo;
     }
 }
 
@@ -75,17 +75,56 @@ bool fdisk::sizeAdd(string parametros[])
     { return true; } 
 }
 
-// metodo para verificacion si se creara una particion o agreagar a una particion espacio
-void fdisk::crearAgregarParticion(string parametros[])
+
+
+// fucion para actulizar los parametros opcionales para la creacion de un disco
+void fdisk::parametrosOPcrear(string parametros[])
 {
-    // parametro add en posicion 1, parametro size en posicion 3
-    if(parametros[3].empty() != true)
+    // type tipo particion posicion5, f tipo de ajuste posicion 6, u tamanio disco posicion 7
+    // tipo de particion a crear
+    if(parametros[5].empty() != true)
     {
-        sizeParticion = atoi(parametros[3].c_str());
-        crearParticion(sizeParticion);
+        this->type = FUN.aMinuscula(parametros[5]);
+        if(this->type == "p"){this->tipoParticion = 'p';}
+        else if(this->type == "e"){this->tipoParticion = 'e';}
+        else if(this->type == "l"){this->tipoParticion = 'l';}
+    }
+    // para actualizacion del tipo de ajuste
+    if(parametros[6].empty() != true)
+    {
+        this->f = FUN.aMinuscula(parametros[6]);
+        if(this->f == "bf"){this->fitParticion='b';}
+        else if(this->f == "ff"){this->fitParticion='f';}
+        else if(this->f == "wf"){this->fitParticion='w';}        
+    }
+    // actualizacion el tamanio particion
+    if(parametros[7].empty() != true)
+    {
+        this->u = FUN.aMinuscula(parametros[6]);
+        if(this->u == "b"){this->sizeParticion = sizeParticion * 1024;}
+        else if(this->u == "m"){this->sizeParticion = sizeParticion * 1024 * 1024;}
     }
     else
     {
+        this->sizeParticion = sizeParticion * 1024;
+    }
+}
+
+// metodo para verificacion si se creara una particion o agreagar a una particion espacio
+void fdisk::crearAgregarParticion(string parametros[])
+{
+    // parametro add en posicion 1, parametro size en posicion 3, name posicion 4
+    if(parametros[3].empty() != true && parametros[4].empty() != true)
+    {
+        // parametro name obligatorio
+        sizeParticion = atoi(parametros[3].c_str());
+        this->name = verificacionComillas(parametros[4]);
+        parametrosOPcrear(parametros);
+        crearParticion(sizeParticion);     
+    }
+    else
+    {
+        cout<<"-->parametros obligatorios faltantes: size,add,name"<<endl;
     }
 }
 
@@ -186,20 +225,30 @@ void fdisk::encontrarEspaciosLibres()
     }
     
     // impresion de los espacios en blanco dentro del disco
-    cout<<"******Espcios en Blanco*********"<<endl;
-    cout<<"Tamanio del disco: "<<tamanioDisco<<endl;
-    for(int inicio = 0;inicio<particionesLibres.size();inicio++)
-    {
-        cout<<"Particion Libre No."<<inicio<<endl;
-        cout<<"Espacio: "<<particionesLibres[inicio].part_size<<endl;
-        cout<<"Inicio: "<<particionesLibres[inicio].part_star<<endl;
-        cout<<endl;
-        cout<<endl;
-    }
+    impresionParticionesLibres();
 }
 
 
 
+// funcion para ordenar los espacios en blanco de una forma mayor a menor
+void fdisk::ordenDescedente()
+{
+    // ordenamiento burbuja al reves
+    // ordenamiento de la copia con las particiones llenas en el disco
+    // ordenamiento burbuja
+    for(int i=0;i<particionesLibres.size()-1;i++)
+    {
+        for(int j=i+1;j<particionesLibres.size();j++)
+        {
+            if(particionesLibres[i].part_size < particionesLibres[j].part_size)
+            {
+                blackPartition aux = particionesLibres[i];
+                particionesLibres[i] = particionesLibres[j];
+                particionesLibres[j] = aux;
+            }
+        }
+    }
+}
 
 // ordenar espacios en blanco segun el tipo de ajuste
 void fdisk::ordenarEspaciosLibres()
@@ -221,20 +270,42 @@ void fdisk::ordenarEspaciosLibres()
    else if(ajuste == 'w')
    {
        // peor ajuste
+       ordenDescedente();
    }
 }
 
 
+
+// funcion para insertar la particion en al archivo binario
+void fdisk::insertarParticion()
+{
+    int tamanioDisco;
+    FILE *archivo;
+    // apertura del disco para lectura y actualizacion rb+
+    archivo = fopen(rutaArchivo.c_str(),"r+b");    
+    if(archivo==NULL)
+        exit(1);
+
+    // cierre del disco
+    fclose(archivo);
+}
+
 // funcion para buscar dentro de las particiones la que mejor se adecue 
 void fdisk::buscarDentroParticion(int sizeParticion)
 {
-    for(int inicio = 0; inicio < particionesLibres.size(); inicio++)
+    int inicio = 0;
+    for(inicio; inicio < particionesLibres.size(); inicio++)
     {
         if(sizeParticion <= particionesLibres[inicio].part_size )
         {
             cout<<"Particion a insertar en la posicion No."<<inicio<<endl;
             break;
         }
+    }
+    inicio++;
+    if(inicio > particionesLibres.size())
+    {
+        cout<<"-->No Hay espacio suficiente dentro del disco para la particion de: "<<sizeParticion<<endl;
     }
 }
 
@@ -246,8 +317,24 @@ void fdisk::crearParticion(int sizeParticion)
     //  busco los espacios libres dentro del disco
     encontrarEspaciosLibres();
     //  ordeno los espacios en blanco segun el fit del disco
-    //ordenarEspaciosLibres(); 
+    ordenarEspaciosLibres(); 
     // busco donde pueda caber la particion que el usuario quiera ingresar
     buscarDentroParticion(sizeParticion);
     // 
+}
+
+
+// funcion para imprimir la particiones libres dentro del disco
+void fdisk::impresionParticionesLibres()
+{
+    // impresion de los espacios en blanco dentro del disco
+    cout<<"******Espcios en Blanco*********"<<endl;
+    for(int inicio = 0;inicio<particionesLibres.size();inicio++)
+    {
+        cout<<"Particion Libre No."<<inicio<<endl;
+        cout<<"Espacio: "<<particionesLibres[inicio].part_size<<endl;
+        cout<<"Inicio: "<<particionesLibres[inicio].part_star<<endl;
+        cout<<endl;
+        cout<<endl;
+    }
 }
