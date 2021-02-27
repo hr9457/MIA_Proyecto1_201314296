@@ -331,6 +331,7 @@ void fdisk::buscarDentroParticion(int sizeParticion)
                         cout<<"que inicia en: "<<star<<endl;
                         cout<<"que tiene tmanio de: "<<sizeEncontrado<<endl;
                         agregarActualizarMBR('1',tipoParticion,this->fitParticion,star,sizeEncontrado,this->name);
+                        // fdisk -path=/home/hector/prueba/discoFF2.dk -size=200 -u=b -type=p -f=ff -name=hector
                         break;
                     }
                 }
@@ -397,6 +398,7 @@ void fdisk::agregarActualizarMBR(char status,char type,char fit,int star,int siz
         {
             // introduccimos nueva particion en esta posicion
             MBR.mbr_partitions[particion] = nuevaParticion;
+            break;
         }
     }
     // posiciono al inicio del archivo
