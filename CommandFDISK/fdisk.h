@@ -43,6 +43,7 @@ private:
     void insertarParticion();
     void impresionParticionesLibres();
     void parametrosOPcrear(string []);
+    void agregarActualizarMBR(char,char,char,int,int,string);
 public:
     fdisk();
     void ejecutarFdisk(string []);

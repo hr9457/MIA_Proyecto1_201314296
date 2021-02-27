@@ -283,19 +283,6 @@ void fdisk::ordenarEspaciosLibres()
 
 
 
-// funcion para insertar la particion en al archivo binario
-void fdisk::insertarParticion()
-{
-    int tamanioDisco;
-    FILE *archivo;
-    // apertura del disco para lectura y actualizacion rb+
-    archivo = fopen(rutaArchivo.c_str(),"r+b");    
-    if(archivo==NULL)
-        exit(1);
-
-    // cierre del disco
-    fclose(archivo);
-}
 
 // funcion para buscar dentro de las particiones la que mejor se adecue 
 void fdisk::buscarDentroParticion(int sizeParticion)
@@ -334,11 +321,16 @@ void fdisk::buscarDentroParticion(int sizeParticion)
                     else if(tipoParticion=='p')
                     {
                         // creacion particiones primarias
+                        int star = particionesLibres[inicio].part_star;
+                        int sizeEncontrado = particionesLibres[inicio].part_size;
                         cout<<"Creacion de una particion tipo: "<<tipoParticion<<endl;
                         cout<<"particion de tamanio: "<<this->sizeParticion<<""<<this->u<<endl;
                         cout<<"Con fit de: "<<this->fitParticion<<endl;
                         cout<<"El nombre de: "<<this->name<<endl;
                         cout<<"EN PARTICION No."<<inicio<<endl;
+                        cout<<"que inicia en: "<<star<<endl;
+                        cout<<"que tiene tmanio de: "<<sizeEncontrado<<endl;
+                        agregarActualizarMBR('1',tipoParticion,this->fitParticion,star,sizeEncontrado,this->name);
                         break;
                     }
                 }
@@ -371,6 +363,71 @@ void fdisk::crearParticion(int sizeParticion)
     // busco donde pueda caber la particion que el usuario quiera ingresar
     buscarDentroParticion(this->sizeParticion);
     // 
+}
+
+
+//funcion para leer y actualizar el mbr del disco
+void fdisk::agregarActualizarMBR(char status,char type,char fit,int star,int size,string name)
+{
+    // se crea una nueva particon con los datos nuevos
+    partition nuevaParticion;
+    nuevaParticion.part_status = status;
+    nuevaParticion.part_type = type;
+    nuevaParticion.part_fit = fit;
+    nuevaParticion.part_star = star;
+    nuevaParticion.part_size = size;
+    strcpy(nuevaParticion.part_name,name.c_str());
+
+    FILE *archivo;
+    // apertura del disco para lectura y actualizacion rb+
+    archivo = fopen(rutaArchivo.c_str(),"rb+");    
+    if(archivo==NULL)
+        exit(1);
+
+    mbr MBR; // copia de los datos del mbr
+    // posiciono al incio del archivo
+    fseek(archivo,0,SEEK_SET); // inicio del archivo
+    fread(&MBR,sizeof(mbr),1,archivo);// lee el mbr del disco
+
+    //busco una particion basia donde insertar
+    for(int particion=0; particion<4; particion++)
+    {
+        // busco una particion con estatus = 0
+        if(MBR.mbr_partitions[particion].part_status=='0')
+        {
+            // introduccimos nueva particion en esta posicion
+            MBR.mbr_partitions[particion] = nuevaParticion;
+        }
+    }
+    // posiciono al inicio del archivo
+    fseek(archivo,0,SEEK_SET); // inicio del archivo
+    // re-escribo el nuevo mbr para actualizarlo
+    fwrite(&MBR,sizeof(MBR),1,archivo);
+    // cierre del dico con los cambios
+    fclose(archivo);
+
+    //nueva lectura de datos
+    FILE *archivo10;
+    // apertura del disco para lectura y actualizacion rb+
+    archivo10 = fopen(rutaArchivo.c_str(),"rb+");    
+    if(archivo10==NULL)
+        exit(1);
+
+    // lectura del MBR en el disco
+    mbr MBR10;
+    fseek(archivo10,0,SEEK_SET); // inicio del archivo
+    fread(&MBR10,sizeof(mbr),1,archivo10);
+    // cierre del dico con los cambios
+    fclose(archivo10);
+    cout<<"---Datos del Disco---"<<endl;
+    for(int i= 0;i<4;i++)
+    {
+        cout<<"---Particion No."<<i<<endl;
+        cout<<"  *"<<MBR10.mbr_partitions[i].part_status<<endl; 
+        cout<<"  *"<<MBR10.mbr_partitions[i].part_star<<endl;
+        cout<<"  *"<<MBR10.mbr_partitions[i].part_size<<endl;
+        cout<<"  *"<<MBR10.mbr_partitions[i].part_name<<endl; 
+    }
 }
 
 
