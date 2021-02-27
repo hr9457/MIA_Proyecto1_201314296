@@ -100,13 +100,15 @@ void fdisk::parametrosOPcrear(string parametros[])
     // actualizacion el tamanio particion
     if(parametros[7].empty() != true)
     {
-        this->u = FUN.aMinuscula(parametros[6]);
-        if(this->u == "b"){this->sizeParticion = sizeParticion * 1024;}
-        else if(this->u == "m"){this->sizeParticion = sizeParticion * 1024 * 1024;}
+        this->u = FUN.aMinuscula(parametros[7]);
+        if(this->u == "b"){this->sizeParticion = this->sizeParticion;}
+        else if(this->u == "k"){this->sizeParticion = this->sizeParticion * 1024;}
+        else if(this->u == "m"){this->sizeParticion = this->sizeParticion * 1024 * 1024;}
     }
     else
     {
-        this->sizeParticion = sizeParticion * 1024;
+        this->u="k";
+        this->sizeParticion = this->sizeParticion * 1024;
     }
 }
 
@@ -117,10 +119,10 @@ void fdisk::crearAgregarParticion(string parametros[])
     if(parametros[3].empty() != true && parametros[4].empty() != true)
     {
         // parametro name obligatorio
-        sizeParticion = atoi(parametros[3].c_str());
+        this->sizeParticion = atoi(parametros[3].c_str());
         this->name = verificacionComillas(parametros[4]);
         parametrosOPcrear(parametros);
-        crearParticion(sizeParticion);     
+        crearParticion(this->sizeParticion);     
     }
     else
     {
@@ -171,6 +173,11 @@ void fdisk::encontrarEspaciosLibres()
         partition particion;
         if(MBR.mbr_partitions[i].part_status == '1')
         {
+            // contadores para saber cuantas particiones hay de cada tipo
+            if(MBR.mbr_partitions[i].part_type == 'p'){contadorPrimarias++;totalParticiones++;}
+            else if(MBR.mbr_partitions[i].part_type == 'e'){contadorExtendidas++;totalParticiones;}
+            else if(MBR.mbr_partitions[i].part_type == 'l'){contadorLogicas++;}
+            //
             particion.part_star = MBR.mbr_partitions[i].part_star;
             particion.part_size = MBR.mbr_partitions[i].part_size;
             copia.push_back(particion);
@@ -298,8 +305,16 @@ void fdisk::buscarDentroParticion(int sizeParticion)
     {
         if(sizeParticion <= particionesLibres[inicio].part_size )
         {
-            cout<<"Particion a insertar en la posicion No."<<inicio<<endl;
-            break;
+            // escribir la nueva particion
+            if(tipoParticion=='p'||tipoParticion=='e'||tipoParticion=='l')
+            {
+                cout<<"Creacion de una particion tipo: "<<tipoParticion<<endl;
+                cout<<"particion de tamanio: "<<this->sizeParticion<<""<<this->u<<endl;
+                cout<<"Con fit de: "<<this->fitParticion<<endl;
+                cout<<"El nombre de: "<<this->name<<endl;
+                cout<<"EN PARTICION No."<<inicio<<endl;
+                break;
+            }            
         }
     }
     inicio++;
@@ -319,7 +334,7 @@ void fdisk::crearParticion(int sizeParticion)
     //  ordeno los espacios en blanco segun el fit del disco
     ordenarEspaciosLibres(); 
     // busco donde pueda caber la particion que el usuario quiera ingresar
-    buscarDentroParticion(sizeParticion);
+    buscarDentroParticion(this->sizeParticion);
     // 
 }
 

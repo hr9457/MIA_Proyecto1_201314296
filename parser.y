@@ -95,7 +95,7 @@ LISTADO_COMANDOS: LISTADO_COMANDOS COMANDO
 
 COMANDO : MKDISK        {mkdisk disco; disco.crearDisco(mkdiskParametros);for(int i=0;i<sizeof(mkdiskParametros)/sizeof(mkdiskParametros[0]);i++){mkdiskParametros[i]="";}}
         | RMDSIK        {rmdisk eliminacion; eliminacion.eliminarDisco(rmdiskParametros);}
-        | FDISK         {fdisk manejoParticiones;manejoParticiones.ejecutarFdisk(fdiskParametros);} 
+        | FDISK         {fdisk manejoParticiones;manejoParticiones.ejecutarFdisk(fdiskParametros);for(int i=0;i<sizeof(fdiskParametros)/sizeof(fdiskParametros[0]);i++){fdiskParametros[i]="";}} 
         | EXEC          {exec read; read.leerArchivo(execParametro);}
         | COMENTARIO    {}        
         ;

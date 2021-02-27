@@ -1529,7 +1529,7 @@ yyreduce:
 
   case 7:
 #line 98 "parser.y"
-                        {fdisk manejoParticiones;manejoParticiones.ejecutarFdisk(fdiskParametros);}
+                        {fdisk manejoParticiones;manejoParticiones.ejecutarFdisk(fdiskParametros);for(int i=0;i<sizeof(fdiskParametros)/sizeof(fdiskParametros[0]);i++){fdiskParametros[i]="";}}
 #line 1534 "parser.cpp"
     break;
 

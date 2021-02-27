@@ -5,7 +5,7 @@
 #include <iostream>
 #include <string>
 #include <cstring>
-#include <list>
+//#include <list>
 #include <fstream>
 #include <vector>
 #include <cstdlib>
@@ -22,11 +22,11 @@ private:
     string typeParticion = "p";
     string tipoAjuste = "wf";
     char ajuste;    
-    string name,u,f,type;
+    string name="",u="k",f,type;
     int sizeParticion;
     char fitParticion='w';
     char tipoParticion='p';
-    int contadorPrimarias,contadorExtendidas;
+    int contadorPrimarias=0,contadorExtendidas=0,contadorLogicas=0,totalParticiones=0;
     // lista para los espacios en blanco
     vector<partition> copia;
     vector<blackPartition> particionesLibres;
