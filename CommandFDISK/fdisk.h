@@ -44,6 +44,8 @@ private:
     void impresionParticionesLibres();
     void parametrosOPcrear(string []);
     void agregarActualizarMBR(char,char,char,int,int,string);
+    void eliminarParticion(string []);
+    void eliminarActulizarMBR(string,string);
 public:
     fdisk();
     void ejecutarFdisk(string []);

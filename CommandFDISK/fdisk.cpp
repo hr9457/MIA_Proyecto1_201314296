@@ -19,12 +19,25 @@ void fdisk::ejecutarFdisk(string parametros[])
             // verificacion comando add y delete no vengan juntos
             if(addDelete(parametros))
             {
-                // verificacion que los parametros size y add no vengan juntos
-                if(sizeAdd(parametros))
-                {  
-                    // // si viene size o add
-                    crearAgregarParticion(parametros);           
-                }                
+                // si viene un size o un add entre los parametros
+                if(parametros[1].empty()!=true || parametros[3].empty()!=true)
+                {
+                    // verificacion que los parametros size y add no vengan juntos
+                    if(sizeAdd(parametros))
+                    {  
+                        // // si viene size o add
+                        crearAgregarParticion(parametros);           
+                    }
+                }
+                // si viene el parametro delete entre los parametros
+                else if(parametros[2].empty()!=true)
+                {
+                    eliminarParticion(parametros);
+                }
+                else 
+                {
+                    cout<<"-->Parametros faltantes"<<endl;
+                }                                
             }            
         }        
     }
@@ -445,5 +458,63 @@ void fdisk::impresionParticionesLibres()
         cout<<"Inicio: "<<particionesLibres[inicio].part_star<<endl;
         cout<<endl;
         cout<<endl;
+    }
+}
+
+
+// funcion para eleminar particiones dentro de un disco
+void fdisk::eliminarParticion(string parametros[])
+{
+    // busqueda del parametro name = id,cadena en la particiones
+    if(parametros[4].empty()!=true)
+    {
+        string tipoEliminacion = FUN.aMinuscula(parametros[2]);
+        string nombreParticion = verificacionComillas(parametros[4]);
+        if(tipoEliminacion == "fast" || tipoEliminacion == "full")
+        {
+            eliminarActulizarMBR(tipoEliminacion,nombreParticion); // actualizar el disco y MBR
+        }
+        else
+        {
+            cout<<"-->Falta de parametro en delete obligatorios: fat o full"<<endl;
+        }
+    }
+    else
+    {
+        cout<<"-->parametros obligatorio para eliminar: name"<<endl;
+    }
+}
+
+
+
+// funcion para elimar dentro del disco y actualizar el MBR del disco
+void fdisk::eliminarActulizarMBR(string tipoEliminacion,string nombreParticion)
+{
+    mbr MBR;
+    FILE *archivo;
+    // apertura del disco para lectura y actualizacion rb+
+    archivo = fopen(rutaArchivo.c_str(),"rb+");    
+    if(archivo==NULL)
+        exit(1);
+
+    // posiciono al principio y leo el MBR del disco
+    fseek(archivo,0,SEEK_SET); // inicio del archivo
+    fread(&MBR,sizeof(mbr),1,archivo); // lectura del MBR   
+    //busqueda de una particion el nombre que el usuario quiere eliminar
+    for(int particion=0;particion<4;particion++)
+    {
+    }
+    // cierre del archivo
+    fclose(archivo);
+    // verificacion del tipo de eliminacion que se hara dentro del discos
+    if(tipoEliminacion == "fast")
+    {
+        cout<<"-->Se realizao una elminacion dentro del disco tipo fast"<<endl;
+        cout<<"-->de la particion: "<<nombreParticion<<endl;
+    }
+    else if(tipoEliminacion == "full")
+    {
+        cout<<"-->Se realizao una elminacion dentro del disco tipo full"<<endl;
+        cout<<"-->de la particion: "<<nombreParticion<<endl;
     }
 }

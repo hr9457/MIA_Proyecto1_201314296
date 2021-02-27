@@ -92,3 +92,10 @@ bool funciones::buscarElemento(string arreglo[],string elemento)
     else
     {return false;}
 }
+
+
+// metodo para convertir un arreglo de char a un string 
+string funciones::vectorAstring(char arreglo[])
+{
+    int limite = sizeof(arreglo)/sizeof(arreglo[0]);
+}

@@ -20,6 +20,7 @@ public:
     string aMinuscula(string);
     void limpiarVector(string []);
     bool buscarElemento(string [],string);
+    string vectorAstring(char []);
 };
 
 #endif // FUNCIONES_H
