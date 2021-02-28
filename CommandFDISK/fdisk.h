@@ -9,6 +9,7 @@
 #include <fstream>
 #include <vector>
 #include <cstdlib>
+#include <stdio.h>
 #include "libreria/funciones.h"
 #include "Estructuras/structs.h"
 using namespace std;

@@ -503,18 +503,52 @@ void fdisk::eliminarActulizarMBR(string tipoEliminacion,string nombreParticion)
     //busqueda de una particion el nombre que el usuario quiere eliminar
     for(int particion=0;particion<4;particion++)
     {
+        string particionActual = FUN.vectorAstring(MBR.mbr_partitions[particion].part_name);
+        if(strcmp(nombreParticion.c_str(),particionActual.c_str())==0)
+        {
+             // verificacion del tipo de eliminacion que se hara dentro del discos
+            if(tipoEliminacion == "fast")
+            {
+                cout<<"-->Se realizao una elminacion dentro del disco tipo fast"<<endl;
+                cout<<"-->de la particion: "<<nombreParticion<<endl;
+                cout<<"---Datos del Disco---"<<endl;
+                for(int i= 0;i<4;i++)
+                {
+                    cout<<"---Particion No."<<i<<endl;
+                    cout<<"  *"<<MBR.mbr_partitions[i].part_status<<endl; 
+                    cout<<"  *"<<MBR.mbr_partitions[i].part_star<<endl;
+                    cout<<"  *"<<MBR.mbr_partitions[i].part_size<<endl;
+                    cout<<"  *"<<MBR.mbr_partitions[i].part_name<<endl; 
+                }
+                break;
+            }
+            else if(tipoEliminacion == "full")
+            {
+                cout<<"-->Se realizao una elminacion dentro del disco tipo full"<<endl;
+                cout<<"-->de la particion: "<<nombreParticion<<endl;
+                cout<<"---Datos del Disco---"<<endl;
+                for(int i= 0;i<4;i++)
+                {
+                    cout<<"---Particion No."<<i<<endl;
+                    cout<<"  *"<<MBR.mbr_partitions[i].part_status<<endl; 
+                    cout<<"  *"<<MBR.mbr_partitions[i].part_star<<endl;
+                    cout<<"  *"<<MBR.mbr_partitions[i].part_size<<endl;
+                    cout<<"  *"<<MBR.mbr_partitions[i].part_name<<endl; 
+                }
+                break;
+            }
+        }
+    }
+    cout<<"---Datos del Disco---"<<endl;
+    for(int i= 0;i<4;i++)
+    {
+        cout<<"---Particion No."<<i<<endl;
+        cout<<"  *"<<MBR.mbr_partitions[i].part_status<<endl; 
+        cout<<"  *"<<MBR.mbr_partitions[i].part_star<<endl;
+        cout<<"  *"<<MBR.mbr_partitions[i].part_size<<endl;
+        cout<<"  *"<<MBR.mbr_partitions[i].part_name<<endl; 
     }
     // cierre del archivo
-    fclose(archivo);
-    // verificacion del tipo de eliminacion que se hara dentro del discos
-    if(tipoEliminacion == "fast")
-    {
-        cout<<"-->Se realizao una elminacion dentro del disco tipo fast"<<endl;
-        cout<<"-->de la particion: "<<nombreParticion<<endl;
-    }
-    else if(tipoEliminacion == "full")
-    {
-        cout<<"-->Se realizao una elminacion dentro del disco tipo full"<<endl;
-        cout<<"-->de la particion: "<<nombreParticion<<endl;
-    }
+    fclose(archivo);   
+    cout<<"-->Cierre del archivo exitoso"<<endl;
 }

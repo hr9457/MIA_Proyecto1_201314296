@@ -98,4 +98,10 @@ bool funciones::buscarElemento(string arreglo[],string elemento)
 string funciones::vectorAstring(char arreglo[])
 {
     int limite = sizeof(arreglo)/sizeof(arreglo[0]);
+    string palabra = "";
+    for(int i=0;i<limite;i++)
+    {
+        palabra += arreglo[i];
+    }
+    return palabra;
 }
