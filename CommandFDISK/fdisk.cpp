@@ -486,52 +486,70 @@ void fdisk::eliminarActulizarMBR(string tipoEliminacion,string nombreParticion)
             // verificacion del tipo de eliminacion que se hara dentro del discos
             if(tipoEliminacion == "fast")
             {
-                cout<<"-->Se realizao una elminacion dentro del disco tipo fast"<<endl;
-                cout<<"-->de la particion: "<<nombreParticion<<endl;
-                // actualizacion en el MBR del disco
-                //actualizacon para el MBR del disco 
-                MBR.mbr_partitions[particion].part_status = '0';
-                MBR.mbr_partitions[particion].part_type = '-';
-                MBR.mbr_partitions[particion].part_fit = '-';
-                MBR.mbr_partitions[particion].part_star = -1;
-                MBR.mbr_partitions[particion].part_size = -1;
-                strcpy(MBR.mbr_partitions[particion].part_name,"0");
-                //actualizo el MBR del disco
-                fseek(archivo,0,SEEK_SET); // inicio del archivo
-                fwrite(&MBR,sizeof(MBR),1,archivo); //escribo y actualizo
-                break;
+                
+                    cout<<"-->Se realizao una elminacion dentro del disco tipo fast"<<endl;
+                    cout<<"-->de la particion: "<<nombreParticion<<endl;
+                    // actualizacion en el MBR del disco
+                    //actualizacon para el MBR del disco 
+                    MBR.mbr_partitions[particion].part_status = '0';
+                    MBR.mbr_partitions[particion].part_type = '-';
+                    MBR.mbr_partitions[particion].part_fit = '-';
+                    MBR.mbr_partitions[particion].part_star = -1;
+                    MBR.mbr_partitions[particion].part_size = -1;
+                    strcpy(MBR.mbr_partitions[particion].part_name,"0");
+                    //actualizo el MBR del disco
+                    fseek(archivo,0,SEEK_SET); // inicio del archivo
+                    fwrite(&MBR,sizeof(MBR),1,archivo); //escribo y actualizo
+                    break;break;
+                
             }
             // eliminacion full - llenado con 0 en la particion del disco
             else if(tipoEliminacion == "full")
             {
-                cout<<"-->Se realizao una elminacion dentro del disco tipo full"<<endl;
-                cout<<"-->de la particion: "<<nombreParticion<<endl;                          
-                // llenando de caracters la particion eliminada por full
-                int inicioParticion = MBR.mbr_partitions[particion].part_star;
-                int tamanioParticion = MBR.mbr_partitions[particion].part_size;
-                char caracterVaciado = '\0';
-                // llenando de caracters esta particion a elminacion full
-                for(int i=0; i<tamanioParticion; i++)
-                {     
-                    fseek(archivo,inicioParticion,SEEK_SET);               
-                    fwrite(&caracterVaciado,sizeof(caracterVaciado),1,archivo); // escribo en esa posicion                     
-                    inicioParticion++;
-                }
-                //actualizacon para el MBR del disco 
-                MBR.mbr_partitions[particion].part_status = '0';
-                MBR.mbr_partitions[particion].part_type = '-';
-                MBR.mbr_partitions[particion].part_fit = '-';
-                MBR.mbr_partitions[particion].part_star = -1;
-                MBR.mbr_partitions[particion].part_size = -1;
-                strcpy(MBR.mbr_partitions[particion].part_name,"0");
-                //actualizo el MBR del disco
-                fseek(archivo,0,SEEK_SET); // inicio del archivo
-                fwrite(&MBR,sizeof(MBR),1,archivo); //escribo y actualizo
-                break;
-            }
-        }
+                
+                    cout<<"-->Se realizao una elminacion dentro del disco tipo full"<<endl;
+                    cout<<"-->de la particion: "<<nombreParticion<<endl;                          
+                    // llenando de caracters la particion eliminada por full
+                    int inicioParticion = MBR.mbr_partitions[particion].part_star;
+                    int tamanioParticion = MBR.mbr_partitions[particion].part_size;
+                    char caracterVaciado = '\0';
+                    // llenando de caracters esta particion a elminacion full
+                    for(int i=0; i<tamanioParticion; i++)
+                    {     
+                        fseek(archivo,inicioParticion,SEEK_SET);               
+                        fwrite(&caracterVaciado,sizeof(caracterVaciado),1,archivo); // escribo en esa posicion                     
+                        inicioParticion++;
+                    }
+                    //actualizacon para el MBR del disco 
+                    MBR.mbr_partitions[particion].part_status = '0';
+                    MBR.mbr_partitions[particion].part_type = '-';
+                    MBR.mbr_partitions[particion].part_fit = '-';
+                    MBR.mbr_partitions[particion].part_star = -1;
+                    MBR.mbr_partitions[particion].part_size = -1;
+                    strcpy(MBR.mbr_partitions[particion].part_name,"0");
+                    //actualizo el MBR del disco
+                    fseek(archivo,0,SEEK_SET); // inicio del archivo
+                    fwrite(&MBR,sizeof(MBR),1,archivo); //escribo y actualizo
+                    break;
+            }//fin del tipo de  elimacion
+        }//fin de la busqueda la particon
     }
     // cierre del archivo
     fclose(archivo);
     cout<<"-->Eliminacion y Actualicion Exitosa"<<endl;
+}
+
+
+// fucnion para la confirmacion de la eliminacion de la particion
+bool fdisk::preguntaParaEliminacion()
+{
+    char opcion;
+    cout<<"**>Esta segurao que desea eliminar la particion (Y/N)";
+    cin>>opcion;
+    if(opcion=='y'||opcion=='Y')
+    {return true;}
+    else if(opcion=='n'||opcion=='N')
+    {return false;}
+    else
+    {return false;}
 }
